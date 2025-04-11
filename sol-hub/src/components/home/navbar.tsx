@@ -1,10 +1,35 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { useWallet } from "@/hooks/useWallet";
+import ConnectWalletButton from "./connectWalletbutton";
+import DashboardButton from "./dashboardbutton";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { toast } = useToast();
+  const { isConnected, error } = useWallet();
+
+  useEffect(() => {
+    if (error) {
+      toast({
+        title: "Wallet Connection Error",
+        description: error,
+        variant: "destructive",
+      });
+    }
+  }, [error, toast]);
+
+  useEffect(() => {
+    if (isConnected) {
+      toast({
+        title: "Wallet Connected",
+        description: "Your wallet has been successfully connected!",
+      });
+    }
+  }, [isConnected, toast]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -61,12 +86,13 @@ const Navbar = () => {
         </nav>
 
         <div className="hidden md:flex items-center space-x-4">
-          <Button variant="ghost" className="text-white hover:bg-white/10">
-            Sign In
-          </Button>
-          <Button className="bg-gradient-to-r from-purple to-orange text-white hover:opacity-90">
-            Start Free Trial
-          </Button>
+          <div className="text-white hover:bg-white/10">
+            <ConnectWalletButton />
+          </div>
+          <div className="bg-gradient-to-r from-purple to-orange text-white hover:opacity-90">
+            {!isConnected}
+            <DashboardButton />
+          </div>
         </div>
 
         {/* Mobile Menu Button */}
