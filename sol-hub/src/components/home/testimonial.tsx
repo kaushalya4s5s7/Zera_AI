@@ -107,17 +107,19 @@ const Testimonials = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-white/50 to-transparent z-10 pointer-events-none"></div>
+
           {/* First Column - Moving Upward */}
           <div className="relative h-[600px] overflow-hidden">
             {/* Top fade effect */}
-            <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-background to-transparent z-10"></div>
+            <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-white/50 to-transparent z-10 pointer-events-none"></div>
 
             {/* Vertically scrolling content */}
             <div className="absolute inset-0 flex flex-col animate-scroll-up">
               {duplicatedTestimonials.map((testimonial, index) => (
                 <div
                   key={`col1-${index}`}
-                  className="glass-morphism p-6 rounded-xl mb-6 min-h-[280px] flex flex-col"
+                  className="glass-morphism  p-6 rounded-xl mb-6 min-h-[280px] flex flex-col"
                 >
                   <div className="flex items-center gap-4 mb-4">
                     <img
@@ -157,13 +159,13 @@ const Testimonials = () => {
             </div>
 
             {/* Bottom fade effect */}
-            <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-background to-transparent z-10"></div>
+            <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-white/30 to-transparent z-10 pointer-events-none"></div>
           </div>
 
           {/* Second Column - Moving Downward */}
           <div className="relative h-[600px] overflow-hidden">
             {/* Top fade effect */}
-            <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-background to-transparent z-10"></div>
+            <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-white/50 to-transparent z-10 pointer-events-none"></div>
 
             {/* Vertically scrolling content */}
             <div className="absolute inset-0 flex flex-col animate-scroll-down">
@@ -216,7 +218,7 @@ const Testimonials = () => {
           {/* Third Column - Moving Upward */}
           <div className="relative h-[600px] overflow-hidden">
             {/* Top fade effect */}
-            <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-background to-transparent z-10"></div>
+            <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-white/50 to-transparent z-10 pointer-events-none"></div>
 
             {/* Vertically scrolling content */}
             <div className="absolute inset-0 flex flex-col animate-scroll-up-slow">

@@ -10,7 +10,7 @@ const Hero = () => {
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-gradient leading-tight">
               Secure Your{" "}
               <span className="text-gradient-purple">Smart Contracts</span> with
-              AuraAudit
+              SolHub
             </h1>
 
             <p className="text-xl md:text-2xl text-white/80 max-w-lg font-medium">
@@ -52,8 +52,8 @@ const Hero = () => {
           </div>
 
           <div className="relative animate-slide-in-right">
-            <div className="glass-morphism rounded-2xl p-6 md:p-8 relative z-10 shadow-xl">
-              <div className="bg-gradient-radial from-purple/20 to-transparent absolute inset-0 rounded-2xl z-0"></div>
+            <div className="bg-black border-6 border-white/100 rounded-2xl p-6 md:p-8 relative z-10 shadow-xl">
+              <div className="bg-gradient-radial border-6 border-white/100 from-purple/20 to-transparent absolute inset-0 rounded-2xl z-0"></div>
               <div className="relative z-10">
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
                   <div className="bg-white/10 rounded-lg p-4 text-center">

@@ -1,5 +1,7 @@
 @tailwind base;
+@tailwind components;
 @tailwind utilities;
+
 @layer base {
   :root {
     --background: #080220;
@@ -23,7 +25,6 @@
     --input: 240 3.7% 15.9%;
     --ring: 240 4.9% 83.9%;
     --radius: 0.75rem;
-    --font-mono: "JetBrains Mono", monospace;
     --bg-primary: #0f0a1a;
     --bg-secondary: #1a1225;
     --text-primary: #f9fafb;
@@ -31,9 +32,7 @@
     --glow-effect: 0 0 5px rgba(142, 45, 226, 0.5),
       0 0 10px rgba(142, 45, 226, 0.3);
   }
-}
 
-@layer base {
   @font-face {
     font-family: "JetBrains Mono";
     src: local("JetBrains Mono"),
@@ -52,32 +51,13 @@
     font-display: swap;
   }
 
-  @layer utilities {
-    * {
-      @apply border-border selection:bg-white/10 selection:text-white;
-    }
-  }
-
-  body {
-    @apply bg-background text-foreground antialiased overflow-x-hidden;
-    font-family: Arial, Helvetica, sans-serif;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-    overflow: -moz-scrollbars-none;
-    font-feature-settings: "ss01", "ss02", "cv01", "cv02", "cv03";
-  }
-
   * {
+    @apply border-border selection:bg-white/10 selection:text-white;
     -ms-overflow-style: none;
     scrollbar-width: none;
-    overflow: -moz-scrollbars-none;
   }
 
   ::-webkit-scrollbar {
-    display: none;
-  }
-
-  body::-webkit-scrollbar {
     display: none;
   }
 
@@ -113,7 +93,7 @@
 
 @layer utilities {
   .font-mono {
-    font-family: var(--font-mono);
+    font-family: "JetBrains Mono", monospace;
   }
 
   .logo-gradient-text {
@@ -126,33 +106,14 @@
       #3d2a75
     );
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
     background-clip: text;
     color: transparent;
+    -webkit-text-fill-color: transparent;
     background-size: 200% 200%;
   }
 
   .text-shadow-glow {
-    text-shadow: 0 0 5px rgba(142, 45, 226, 0.5),
-      0 0 10px rgba(142, 45, 226, 0.3);
-  }
-
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
-
-  .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-
-  .scrollbar-none {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-
-  .scrollbar-none::-webkit-scrollbar {
-    display: none;
+    text-shadow: var(--glow-effect);
   }
 
   .glass-morphism {
@@ -168,11 +129,11 @@
   }
 
   .text-gradient-purple {
-    @apply bg-gradient-to-br from-purple-light via-purple to-purple-dark bg-clip-text text-transparent;
+    @apply bg-gradient-to-br from-purple-300 via-purple-500 to-purple-700 bg-clip-text text-transparent;
   }
 
   .text-gradient-orange {
-    @apply bg-gradient-to-br from-orange-light via-orange to-orange-dark bg-clip-text text-transparent;
+    @apply bg-gradient-to-br from-orange-300 via-orange-500 to-orange-700 bg-clip-text text-transparent;
   }
 
   .animate-card-float {
@@ -188,7 +149,7 @@
     @apply absolute inset-0 opacity-0 transition-opacity duration-700;
     background: radial-gradient(
       circle at var(--x, 50%) var(--y, 50%),
-      rgba(255, 255, 255, 0.1) 0%,
+      rgba(255, 255, 255, 0.1),
       transparent 60%
     );
   }
@@ -204,24 +165,17 @@
   .animated-border::after {
     content: "";
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border: 1px solid transparent;
+    inset: 0;
     border-radius: var(--radius);
     background-image: linear-gradient(
       90deg,
       rgba(155, 135, 245, 0.5),
       rgba(249, 115, 22, 0.5)
     );
-    background-origin: border-box;
-    background-clip: border-box;
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask-composite: destination-out;
-    mask-composite: exclude;
     opacity: 0;
     transition: opacity 0.3s;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
   }
 
   .animated-border:hover::after {

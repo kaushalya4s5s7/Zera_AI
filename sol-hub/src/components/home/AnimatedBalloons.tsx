@@ -97,7 +97,7 @@ const AnimatedBalloons: React.FC = () => {
             width: `${balloon.size}px`,
             height: `${balloon.size}px`,
             opacity: balloon.opacity,
-            filter: "blur(8px)",
+            filter: "blur(15px)",
             transform: `rotate(${balloon.id * 30}deg)`,
             transition: "transform 1s ease",
           }}
