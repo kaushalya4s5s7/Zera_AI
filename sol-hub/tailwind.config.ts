@@ -63,6 +63,7 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        navy: "#080220",
         purple: {
           light: "#9b87f5",
           DEFAULT: "#7E69AB",

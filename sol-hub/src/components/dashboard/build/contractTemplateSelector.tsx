@@ -26,12 +26,12 @@ const ContractTemplateSelector = ({ onSelect }: ContractTemplateProps) => {
   };
 
   return (
-    <div className="bg-white/10 backdrop-blur border border-white/20 rounded-xl p-6">
-      <h3 className="text-lg font-semibold text-white mb-4">Select Template</h3>
+    <div className="bg-white/100 backdrop-blur border border-white/20 rounded-xl p-6">
+      <h3 className="text-lg font-semibold text-black mb-4">Select Template</h3>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div
-          className={`relative p-6 rounded-lg border transition-all cursor-pointer ${
+          className={`relative p-6  bg-orange-500 rounded-lg border transition-all cursor-pointer ${
             selected === "erc20"
               ? "border-primary bg-primary/10 shadow"
               : "border-white/10 hover:border-white/30"
@@ -43,7 +43,7 @@ const ContractTemplateSelector = ({ onSelect }: ContractTemplateProps) => {
               <FileJson className="w-6 h-6 text-primary" />
             </div>
             <div>
-              <h4 className="font-semibold text-white">ERC20 Token</h4>
+              <h4 className="font-semibold text-black">ERC20 Token</h4>
               <p className="text-sm text-gray-300">Standard fungible token</p>
             </div>
           </div>
@@ -71,13 +71,13 @@ const ContractTemplateSelector = ({ onSelect }: ContractTemplateProps) => {
           }`}
           onClick={() => handleSelect("nft")}
         >
-          <div className="flex items-center gap-3">
+          <div className="flex e items-center gap-3">
             <div className="bg-primary/10 p-3 rounded-lg">
               <Code className="w-6 h-6 text-primary" />
             </div>
             <div>
-              <h4 className="font-semibold text-white">NFT Collection</h4>
-              <p className="text-sm text-gray-300">
+              <h4 className="font-semibold text-black">NFT Collection</h4>
+              <p className="text-sm text-gray-400">
                 Non-fungible token standard
               </p>
             </div>

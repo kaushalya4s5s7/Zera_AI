@@ -4,7 +4,7 @@ import {
   connectWallet,
   connectWalletSuccess,
   connectWalletFailure,
-} from "../store/authSlice";
+} from "@/store/authSlice";
 
 export const connectMetamask = async (saveToSupabase = false) => {
   try {

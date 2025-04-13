@@ -18,14 +18,14 @@ const Sidebar = () => {
 
   const navItems = [
     {
-      name: "Dashboard",
-      path: "/pages/dashboard",
-      icon: <Home className="w-5 h-5" />,
+      name: "Build",
+      path: "/pages/dashboard/",
+      icon: <Code2 className="w-5 h-5" />,
     },
     {
-      name: "Build",
+      name: "Analytics",
       path: "/pages/dashboard/build",
-      icon: <Code2 className="w-5 h-5" />,
+      icon: <Home className="w-5 h-5" />,
     },
     {
       name: "Profile",
@@ -63,7 +63,7 @@ const Sidebar = () => {
     <aside className="bg-sidebar w-64 p-5 shadow-lg border-r border-sidebar-border flex flex-col z-10">
       <div className="flex items-center gap-3 mb-8 px-4 pt-2">
         <div className="w-8 h-8 bg-primary rounded-md flex items-center justify-center">
-          <Shield className="w-5 h-5 text-white" />
+          <Shield className="w-5 h-5 text-black" />
         </div>
         <h1 className="text-xl font-bold text-sidebar-foreground">
           SecureWeb3

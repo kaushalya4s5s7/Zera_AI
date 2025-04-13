@@ -132,7 +132,7 @@ const CodeEditor = ({ contractType, initialCode }: CodeEditorProps) => {
   };
 
   return (
-    <div className="bg-slate-900-dark rounded-xl border border-white/10 overflow-hidden">
+    <div className="bg-black rounded-xl border border-white/10 overflow-hidden">
       <div className="flex justify-between items-center px-4 py-2 border-b border-white/10">
         <div className="flex items-center gap-2">
           <div className="flex gap-1.5">
@@ -168,7 +168,7 @@ const CodeEditor = ({ contractType, initialCode }: CodeEditorProps) => {
         </div>
         <div className="flex gap-3">
           <button
-            className="px-4 py-2 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-colors flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+            className="px-4 py-2 rounded-lg bg-white/100 text-black hover:bg-white/20 transition-colors flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
             onClick={handleSaveCode}
             disabled={isSaving}
           >
@@ -182,7 +182,7 @@ const CodeEditor = ({ contractType, initialCode }: CodeEditorProps) => {
             )}
           </button>
           <button
-            className="px-4 py-2 rounded-lg bg-primary text-white hover:bg-primary/80 transition-colors flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+            className="px-4 py-2 rounded-lg bg-primary text-black hover:bg-primary/80 transition-colors flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
             onClick={handleDeploy}
             disabled={isDeploying}
           >

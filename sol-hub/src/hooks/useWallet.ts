@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
-import type { RootState, AppDispatch } from "@/store/authStore";
-import { disconnectWallet } from "@/store/authSlice";
+import type { RootState, AppDispatch } from "../store/authStore";
+import { disconnectWallet, connectWalletSuccess } from "../store/authSlice";
 import { connectMetamask, truncateAddress } from "../services/walletService";
 import { useSupabase } from "./useSupabase";
 import { useState } from "react";
@@ -16,30 +16,43 @@ export const useWallet = (useSupabaseIntegration = false) => {
     try {
       const address = await connectMetamask();
 
+      // Immediately dispatch to Redux for UI update
+      dispatch(connectWalletSuccess(address));
+
       if (useSupabaseIntegration && address) {
         // Check if Supabase is configured when trying to use it
         if (!isSupabaseConfigured && useSupabaseIntegration) {
           toast.warning(
             "Supabase is not configured. Your wallet is connected but not saved to a database."
           );
+          return;
         }
 
-        // Save wallet address to Supabase (this function will handle the case when Supabase is not configured)
+        // Save wallet address to Supabase
         setSavingToSupabase(true);
         const result = await saveWalletAddress(address);
         setSavingToSupabase(false);
 
-        if (!result.success) {
+        if (result.success) {
+          toast.success("Wallet connected and saved to Supabase");
+        } else {
           console.error("Failed to save wallet to Supabase:", result.error);
+          toast.error("Connected but failed to save to database");
         }
       }
     } catch (error) {
       console.error("Error connecting wallet:", error);
+      let errorMessage = "Failed to connect wallet";
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+      toast.error(errorMessage);
     }
   };
 
   const disconnect = () => {
     dispatch(disconnectWallet());
+    toast.info("Wallet disconnected");
   };
 
   const getTruncatedAddress = () => {

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 import { useDispatch } from "react-redux";
 import { connectWalletSuccess } from "@/store/authSlice";
-import { toast } from "@/components/ui/toaster";
+import { toast } from "sonner";
 
 export const useSupabase = () => {
   const [loading, setLoading] = useState(false);
@@ -16,47 +16,39 @@ export const useSupabase = () => {
         console.warn(
           "Supabase is not configured. Wallet address will only be saved to Redux state."
         );
-        // Still dispatch to Redux, just skip Supabase
-        dispatch(connectWalletSuccess(address));
-        return { success: true };
+        return { success: false, error: "Supabase not configured" };
       }
 
       setLoading(true);
       setError(null);
 
-      // Get current user (if using Supabase Auth)
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+      console.log("Attempting to save wallet address to Supabase:", address);
 
-      if (!user) {
-        // For wallet-only flow without auth
-        // Create or update a profile entry for this wallet
-        const { error: upsertError } = await supabase.from("profiles").upsert({
-          wallet_address: address,
-          id: address, // Using wallet address as ID for simplicity
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        });
+      // For wallet-only flow without auth
+      // Create or update a profile entry for this wallet
+      const { error: upsertError, data } = await supabase
+        .from("profiles")
+        .upsert(
+          {
+            wallet_address: address,
 
-        if (upsertError) throw upsertError;
-      } else {
-        // If using Supabase Auth as well
-        const { error: updateError } = await supabase.from("profiles").upsert({
-          id: user.id,
-          wallet_address: address,
-          updated_at: new Date().toISOString(),
-        });
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+          },
+          { onConflict: "wallet_address" }
+        );
 
-        if (updateError) throw updateError;
+      if (upsertError) {
+        console.error("Supabase upsert error:", upsertError);
+        throw upsertError;
       }
 
-      // Dispatch to Redux
-      dispatch(connectWalletSuccess(address));
-      return { success: true };
+      console.log("Wallet address saved successfully to Supabase:", data);
+      return { success: true, data };
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "Unknown error occurred";
+      console.error("Error saving wallet to Supabase:", errorMessage);
       setError(errorMessage);
       return { success: false, error: errorMessage };
     } finally {

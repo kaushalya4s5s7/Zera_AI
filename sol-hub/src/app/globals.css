@@ -1,9 +1,12 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
+    /* Combined color variables - prioritizing your global.css values */
     --background: #080220;
     --foreground: #ffffff;
     --card: 240 10% 3.9%;
@@ -25,6 +28,16 @@
     --input: 240 3.7% 15.9%;
     --ring: 240 4.9% 83.9%;
     --radius: 0.75rem;
+    --color-bg1: rgb(15, 15, 30); /* Deep Midnight Blue */
+    --color-bg2: rgb(45, 45, 85); /* Dark Indigo */
+    --color1: 75, 0, 130; /* Indigo */
+    --color2: 138, 43, 226; /* Blue Violet */
+    --color3: 0, 191, 255; /* Deep Sky Blue */
+    --color4: 72, 61, 139; /* Dark Slate Blue */
+    --color5: 25, 25, 112; /* Midnight Blue */
+    --color-interactive: 255, 69, 0; /* Vibrant Orange-Red for interactive elements */
+    --circle-size: 80%;
+    --blending: overlay; /* Subtle blending for a modern look */
     --bg-primary: #0f0a1a;
     --bg-secondary: #1a1225;
     --text-primary: #f9fafb;
@@ -33,6 +46,25 @@
       0 0 10px rgba(142, 45, 226, 0.3);
   }
 
+  /* Dark mode - combined values */
+  .dark {
+    --background: #000000;
+    --foreground: #ffffff;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+  }
+
+  /* Combined font faces */
   @font-face {
     font-family: "JetBrains Mono";
     src: local("JetBrains Mono"),
@@ -51,6 +83,7 @@
     font-display: swap;
   }
 
+  /* Combined base styles */
   * {
     @apply border-border selection:bg-white/10 selection:text-white;
     -ms-overflow-style: none;
@@ -63,6 +96,10 @@
 
   html {
     @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-slate-900 font-sans text-foreground;
   }
 
   h1,
@@ -91,7 +128,61 @@
   }
 }
 
+body {
+  position: relative;
+}
+
+/* Makes content appear above the background */
+main {
+  position: relative;
+  z-index: 10;
+}
+.link-svgline a svg.link-svgline {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  overflow: hidden;
+  margin: 0;
+  width: 100%;
+  height: 20px;
+  transition: stroke-dashoffset 0.3s ease-in-out;
+  transform: translateY(-90%);
+  fill: none;
+  stroke: #b1d474;
+  stroke-width: 5;
+  stroke-dasharray: 400px;
+  stroke-dashoffset: 400px;
+}
+
+.link-svgline a:hover svg.link-svgline {
+  stroke-dashoffset: 0px;
+}
+
+@layer components {
+  /* Combined component styles */
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-lg hover:translate-y-[-2px];
+  }
+
+  .sidebar-item {
+    @apply flex items-center border border-orange-400  gap-3 px-4 py-3 rounded-lg bg-white text-black hover:bg-gray-100 transition-all duration-200 font-medium shadow-md card-hover;
+  }
+  .sidebar-item.active {
+    @apply bg-purple-900/20 text-black font-semibold;
+  }
+
+  .glassmorphic,
+  .glass-morphism {
+    @apply bg-white/10 backdrop-blur-xl border border-white/20 shadow-lg;
+  }
+
+  .neo-blur {
+    @apply backdrop-blur-2xl bg-black/40 border border-white/10;
+  }
+}
+
 @layer utilities {
+  /* Combined utility classes */
   .font-mono {
     font-family: "JetBrains Mono", monospace;
   }
@@ -114,14 +205,6 @@
 
   .text-shadow-glow {
     text-shadow: var(--glow-effect);
-  }
-
-  .glass-morphism {
-    @apply backdrop-blur-xl bg-white/5 border border-white/10 shadow-[0_4px_12px_-2px_rgba(0,0,0,0.3)];
-  }
-
-  .neo-blur {
-    @apply backdrop-blur-2xl bg-black/40 border border-white/10;
   }
 
   .text-gradient {
@@ -182,6 +265,19 @@
     opacity: 1;
   }
 
+  .blob {
+    @apply absolute rounded-full filter blur-3xl opacity-70;
+  }
+
+  .text-bold {
+    @apply font-bold;
+  }
+
+  .text-extrabold {
+    @apply font-extrabold;
+  }
+
+  /* Keyframes */
   @keyframes typing {
     from {
       width: 0;
@@ -189,13 +285,6 @@
     to {
       width: 100%;
     }
-  }
-
-  .typing-animation {
-    display: inline-block;
-    overflow: hidden;
-    white-space: nowrap;
-    animation: typing 3s steps(40, end);
   }
 
   @keyframes card-float {
@@ -207,14 +296,6 @@
     }
   }
 
-  .text-bold {
-    @apply font-bold;
-  }
-
-  .text-extrabold {
-    @apply font-extrabold;
-  }
-
   @keyframes scroll {
     0% {
       transform: translateX(0);
@@ -223,11 +304,11 @@
       transform: translateX(-50%);
     }
   }
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #000000;
-    --foreground: #ffffff;
+  .typing-animation {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    animation: typing 3s steps(40, end);
   }
 }

@@ -120,8 +120,8 @@ const CodeAnalyzer = ({ onAnalyze, isAnalyzing }: CodeAnalyzerProps) => {
           </div>
         </div>
 
-        <div className="bg-slate-900-dark rounded-xl border border-white/10 overflow-hidden">
-          <div className="flex justify-between items-center px-4 py-2 border-b border-white/10">
+        <div className="bg-black rounded-xl border border-white/10 overflow-hidden">
+          <div className="flex bg-black justify-between items-center px-4 py-2 border-b border-white/10">
             <div className="flex items-center gap-2">
               <div className="flex gap-1.5">
                 <div className="w-3 h-3 bg-red-500 rounded-full"></div>
