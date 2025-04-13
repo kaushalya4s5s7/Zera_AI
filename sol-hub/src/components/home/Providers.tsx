@@ -7,6 +7,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Provider } from "react-redux";
 import { store } from "@/store/authStore";
+import GradientBackground from "./Gradient";
 
 export default function Providers({ children }: { children: ReactNode }) {
   const [queryClient] = useState(() => new QueryClient());
@@ -17,6 +18,7 @@ export default function Providers({ children }: { children: ReactNode }) {
         <TooltipProvider>
           <Toaster />
           <Sonner />
+
           {children}
         </TooltipProvider>
       </QueryClientProvider>

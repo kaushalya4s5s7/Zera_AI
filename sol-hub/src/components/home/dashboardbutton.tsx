@@ -15,7 +15,7 @@ const DashboardButton = () => {
 
   return (
     <Button
-      onClick={() => router.push("/dashboard")}
+      onClick={() => router.push("/pages/dashboard")}
       className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white flex items-center gap-2 transition-all"
     >
       Go to Dashboard

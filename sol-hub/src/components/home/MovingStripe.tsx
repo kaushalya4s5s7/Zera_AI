@@ -26,13 +26,11 @@ const MovingStrip = ({
     direction === "right" ? "animate-direction-reverse" : "";
 
   return (
-    <div className="w-full overflow-hidden bg-black py-8 relative z-10">
+    <div className="w-full overflow-hidden bg-black py-4 relative z-10">
       {/* Background blur */}
       <div className="absolute inset-0 border-4 border-white bg-black/30 backdrop-blur-sm z-0"></div>
 
       {/* Purple and orange blobs */}
-      <div className="absolute top-1/2 left-1/4 w-40 h-40 rounded-full bg-purple/20 filter blur-3xl opacity-70 animate-pulse"></div>
-      <div className="absolute top-1/2 right-1/4 w-40 h-40 rounded-full bg-orange/20 filter blur-3xl opacity-70 animate-pulse"></div>
 
       <div className="relative z-10">
         <div
@@ -42,7 +40,7 @@ const MovingStrip = ({
           {[...items, ...items].map((item, index) => (
             <div key={index} className="mx-6 flex items-center">
               <span
-                className={`text-4xl md:text-5xl font-extrabold ${item.color}`}
+                className={`text-2xl md:text-5xl font-extrabold ${item.color}`}
               >
                 {item.text}
               </span>
