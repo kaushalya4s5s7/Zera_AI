@@ -1,16 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   AlertTriangle,
   AlertCircle,
   Info,
   Check,
   ExternalLink,
-  Loader2,
 } from "lucide-react";
-import { analyzeContractSecurity } from "../../../../utils/mistralAI";
-import { useToast } from "@/hooks/use-toast";
 
 const SeverityBadge = ({ severity }: { severity: string }) => {
   const getBadgeStyles = () => {
@@ -53,109 +50,63 @@ const SeverityBadge = ({ severity }: { severity: string }) => {
 };
 
 interface AuditResultsProps {
-  contractCode: string;
-  chain: string;
+  score: number;
+  issueCount: {
+    critical: number;
+    high: number;
+    medium: number;
+    low: number;
+    info: number;
+  };
+  auditReport: string;
 }
 
-const AuditResults = ({ contractCode, chain }: AuditResultsProps) => {
-  const [auditIssues, setAuditIssues] = useState<any[]>([]);
-  const [selectedIssue, setSelectedIssue] = useState<number | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast();
-
-  useEffect(() => {
-    const fetchAuditIssues = async () => {
-      setIsLoading(true);
-      setAuditIssues([]);
-      setSelectedIssue(null);
-
-      try {
-        const issues = await analyzeContractSecurity(contractCode, chain);
-        const parsedIssues = JSON.parse(issues); // Ensure the response is parsed
-        setAuditIssues(parsedIssues);
-        toast({
-          title: "Audit Completed",
-          description: "Security issues have been successfully analyzed.",
-        });
-      } catch (error) {
-        console.error("Error analyzing contract security:", error);
-        toast({
-          title: "Error",
-          description: "Failed to analyze the contract. Please try again.",
-          variant: "destructive",
-        });
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchAuditIssues();
-  }, [contractCode, chain]);
-
+const AuditResults = ({
+  score,
+  issueCount,
+  auditReport,
+}: AuditResultsProps) => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-      <div className="lg:col-span-4">
-        <div className="bg-white/10 backdrop-blur border border-white/20 rounded-xl overflow-hidden">
-          <div className="px-6 py-4 border-b border-white/10">
-            <h3 className="text-lg font-semibold text-white">
-              Security Issues
-            </h3>
-          </div>
-
-          <div className="flex h-[600px]">
-            <div className="w-1/2 border-r border-white/10 overflow-y-auto">
-              {isLoading ? (
-                <div className="h-full flex flex-col items-center justify-center text-gray-400">
-                  <Loader2 className="w-12 h-12 mb-4 animate-spin" />
-                  <p>Analyzing contract...</p>
-                </div>
-              ) : auditIssues.length > 0 ? (
-                auditIssues.map((issue, index) => (
-                  <div
-                    key={index}
-                    className={`p-4 border-b border-white/10 cursor-pointer hover:bg-white/5 transition-colors ${
-                      selectedIssue === index ? "bg-white/5" : ""
-                    }`}
-                    onClick={() => setSelectedIssue(index)}
-                  >
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h4 className="text-white font-medium">
-                          {issue.title}
-                        </h4>
-                        <p className="text-sm text-gray-400 mt-1">
-                          Line: {issue.lineNumbers || "N/A"}
-                        </p>
-                      </div>
-                      <SeverityBadge severity={issue.severity} />
-                    </div>
-                    <p className="text-sm text-gray-300 mt-2 line-clamp-2">
-                      {issue.description}
-                    </p>
-                  </div>
-                ))
-              ) : (
-                <div className="h-full flex flex-col items-center justify-center text-gray-400">
-                  <Info className="w-12 h-12 mb-4 opacity-50" />
-                  <p>No issues found or analysis not started.</p>
-                </div>
-              )}
+      {/* Audit Summary */}
+      <div className="lg:col-span-4 bg-white/10 backdrop-blur border border-white/20 rounded-xl p-6">
+        <h3 className="text-lg font-semibold text-white mb-4">Audit Summary</h3>
+        <p className="text-sm text-gray-300">
+          Overall Security Score:{" "}
+          <span
+            className={`font-bold ${
+              score >= 80
+                ? "text-green-400"
+                : score >= 60
+                ? "text-yellow-400"
+                : "text-red-400"
+            }`}
+          >
+            {score}%
+          </span>
+        </p>
+        <div className="mt-4 grid grid-cols-2 md:grid-cols-5 gap-4">
+          {Object.entries(issueCount).map(([severity, count]) => (
+            <div
+              key={severity}
+              className="flex flex-col items-center bg-black/20 p-4 rounded-lg"
+            >
+              <SeverityBadge severity={severity} />
+              <span className="text-white font-medium mt-2">{count}</span>
+              <span className="text-gray-400 text-xs capitalize">
+                {severity}
+              </span>
             </div>
-
-            <div className="w-1/2 p-6 overflow-y-auto">
-              {selectedIssue !== null && auditIssues[selectedIssue] && (
-                <div>
-                  <h3 className="text-lg font-semibold text-white">
-                    {auditIssues[selectedIssue].title}
-                  </h3>
-                  <p className="text-white mt-4">
-                    {auditIssues[selectedIssue].description}
-                  </p>
-                </div>
-              )}
-            </div>
-          </div>
+          ))}
         </div>
+      </div>
+
+      {/* Audit Report */}
+      <div className="lg:col-span-4 bg-white/10 backdrop-blur border border-white/20 rounded-xl p-6">
+        <h3 className="text-lg font-semibold text-white mb-4">Audit Report</h3>
+        <pre className="text-sm text-gray-300 bg-black p-4 rounded-lg overflow-auto">
+          {auditReport}
+        </pre>
       </div>
     </div>
   );
