@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { ethers } from "ethers";
 import {
   ChevronLeft,
   ChevronRight,
@@ -9,113 +10,13 @@ import {
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-// Sample data
-const contracts = [
-  {
-    id: 1,
-    name: "TokenSwap",
-    chain: "Ethereum",
-    rating: 95,
-    auditor: "Alex Johnson",
-    date: "Apr 10, 2025",
-  },
-  {
-    id: 2,
-    name: "NFT Marketplace",
-    chain: "Polygon",
-    rating: 88,
-    auditor: "Maria Garcia",
-    date: "Apr 8, 2025",
-  },
-  {
-    id: 3,
-    name: "Staking Platform",
-    chain: "Arbitrum",
-    rating: 92,
-    auditor: "John Smith",
-    date: "Apr 5, 2025",
-  },
-  {
-    id: 4,
-    name: "Yield Farming",
-    chain: "Optimism",
-    rating: 78,
-    auditor: "Sarah Lee",
-    date: "Apr 3, 2025",
-  },
-  {
-    id: 5,
-    name: "Lending Protocol",
-    chain: "BSC",
-    rating: 85,
-    auditor: "Robert Chen",
-    date: "Mar 29, 2025",
-  },
-  {
-    id: 6,
-    name: "DEX Aggregator",
-    chain: "Avalanche",
-    rating: 90,
-    auditor: "Emily Wilson",
-    date: "Mar 25, 2025",
-  },
-  {
-    id: 7,
-    name: "Wrapped Token",
-    chain: "Ethereum",
-    rating: 91,
-    auditor: "Alex Johnson",
-    date: "Mar 22, 2025",
-  },
-  {
-    id: 8,
-    name: "Governance Token",
-    chain: "Polygon",
-    rating: 83,
-    auditor: "Maria Garcia",
-    date: "Mar 20, 2025",
-  },
-  {
-    id: 9,
-    name: "NFT Staking",
-    chain: "Arbitrum",
-    rating: 79,
-    auditor: "John Smith",
-    date: "Mar 18, 2025",
-  },
-  {
-    id: 10,
-    name: "Flash Loan",
-    chain: "Optimism",
-    rating: 75,
-    auditor: "Sarah Lee",
-    date: "Mar 15, 2025",
-  },
-  {
-    id: 11,
-    name: "Insurance Protocol",
-    chain: "BSC",
-    rating: 87,
-    auditor: "Robert Chen",
-    date: "Mar 12, 2025",
-  },
-  {
-    id: 12,
-    name: "Bridge",
-    chain: "Avalanche",
-    rating: 82,
-    auditor: "Emily Wilson",
-    date: "Mar 10, 2025",
-  },
+// ABI of the AuditRegistry contract (import or define it here)
+const AUDIT_REGISTRY_ABI = [
+  // Add the ABI of your AuditRegistry contract here
 ];
 
-// Helper function to determine the color based on rating
-const getRatingColor = (rating: number) => {
-  if (rating >= 90) return "bg-gradient-to-r from-secondary to-primary";
-  if (rating >= 80) return "bg-gradient-to-r from-cyan to-primary";
-  if (rating >= 70) return "bg-gradient-to-r from-orange to-primary";
-  return "bg-gradient-to-r from-red-500 to-orange";
-};
+// Address of the deployed AuditRegistry contract
+const AUDIT_REGISTRY_ADDRESS = "0xYourContractAddressHere";
 
 type DataTableProps = {
   className?: string;
@@ -128,16 +29,68 @@ const DataTable = ({ className }: DataTableProps) => {
   const [chainFilter, setChainFilter] = useState<string | null>(null);
   const [auditorFilter, setAuditorFilter] = useState<string | null>(null);
   const [ratingRange, setRatingRange] = useState({ min: 0, max: 100 });
+  const [contracts, setContracts] = useState<any[]>([]);
   const itemsPerPage = 5;
   const { toast } = useToast();
 
-  // Get unique values for filters
-  const uniqueChains = [
-    ...new Set(contracts.map((contract) => contract.chain)),
-  ];
-  const uniqueAuditors = [
-    ...new Set(contracts.map((contract) => contract.auditor)),
-  ];
+  // Initialize Ethers provider and contract instance
+  useEffect(() => {
+    const fetchData = async () => {
+      if (window.ethereum) {
+        try {
+          const provider = new ethers.providers.Web3Provider(window.ethereum);
+          await provider.send("eth_requestAccounts", []);
+          const signer = provider.getSigner();
+          const auditRegistry = new ethers.Contract(
+            AUDIT_REGISTRY_ADDRESS,
+            AUDIT_REGISTRY_ABI,
+            signer
+          );
+
+          // Fetch all audits from the contract
+          const totalContracts = await auditRegistry.getTotalContracts();
+          const allAudits = [];
+          for (let i = 0; i < totalContracts; i++) {
+            const audit = await auditRegistry.getLatestAudit(i);
+            allAudits.push({
+              id: i,
+              name: `Contract ${i}`, // Replace with actual contract name logic
+              chain: "Ethereum", // Replace with actual chain logic
+              rating: audit.stars * 20, // Convert stars to percentage
+              auditor: audit.auditor,
+              date: new Date(
+                audit.timestamp.toNumber() * 1000
+              ).toLocaleDateString(),
+            });
+          }
+          setContracts(allAudits);
+        } catch (error) {
+          console.error("Error fetching data from contract:", error);
+          toast({
+            title: "Error",
+            description: "Failed to fetch data from the contract.",
+            variant: "destructive",
+          });
+        }
+      } else {
+        toast({
+          title: "No Wallet Detected",
+          description: "Please install MetaMask or another Ethereum wallet.",
+          variant: "destructive",
+        });
+      }
+    };
+
+    fetchData();
+  }, [toast]);
+
+  // Helper function to determine the color based on rating
+  const getRatingColor = (rating: number) => {
+    if (rating >= 90) return "bg-gradient-to-r from-secondary to-primary";
+    if (rating >= 80) return "bg-gradient-to-r from-cyan to-primary";
+    if (rating >= 70) return "bg-gradient-to-r from-orange to-primary";
+    return "bg-gradient-to-r from-red-500 to-orange";
+  };
 
   // Filter contracts based on search term and filters
   const filteredContracts = contracts.filter((contract) => {
@@ -145,13 +98,11 @@ const DataTable = ({ className }: DataTableProps) => {
       contract.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       contract.chain.toLowerCase().includes(searchTerm.toLowerCase()) ||
       contract.auditor.toLowerCase().includes(searchTerm.toLowerCase());
-
     const matchesChainFilter = !chainFilter || contract.chain === chainFilter;
     const matchesAuditorFilter =
       !auditorFilter || contract.auditor === auditorFilter;
     const matchesRatingRange =
       contract.rating >= ratingRange.min && contract.rating <= ratingRange.max;
-
     return (
       matchesSearch &&
       matchesChainFilter &&
@@ -177,7 +128,6 @@ const DataTable = ({ className }: DataTableProps) => {
     setAuditorFilter(null);
     setRatingRange({ min: 0, max: 100 });
     setShowFilterMenu(false);
-
     toast({
       title: "Filters Reset",
       description: "All report filters have been cleared",
@@ -203,9 +153,9 @@ const DataTable = ({ className }: DataTableProps) => {
     <div
       className={`bg-white/10 backdrop-blur border border-white/20 rounded-xl p-6 ${className}`}
     >
+      {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
         <h3 className="text-lg font-semibold text-white">Contract Reports</h3>
-
         <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
           <div className="relative">
             <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
@@ -217,7 +167,6 @@ const DataTable = ({ className }: DataTableProps) => {
               className="pl-10 pr-4 py-2 rounded-lg bg-white/5 border border-white/20 text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary w-full sm:w-64"
             />
           </div>
-
           <div className="relative">
             <button
               onClick={() => setShowFilterMenu(!showFilterMenu)}
@@ -226,14 +175,13 @@ const DataTable = ({ className }: DataTableProps) => {
               <Filter className="w-4 h-4" />
               <span>Filter</span>
             </button>
-
             {showFilterMenu && (
               <div className="absolute right-0 mt-2 w-64 bg-slate-900-dark border border-white/20 rounded-lg p-4 z-10">
                 <h4 className="text-sm font-medium text-white mb-3">
                   Filter Reports
                 </h4>
-
                 <div className="space-y-4">
+                  {/* Chain Filter */}
                   <div>
                     <label className="block text-xs text-gray-400 mb-1">
                       Chain
@@ -244,14 +192,10 @@ const DataTable = ({ className }: DataTableProps) => {
                       onChange={(e) => setChainFilter(e.target.value || null)}
                     >
                       <option value="">All Chains</option>
-                      {uniqueChains.map((chain) => (
-                        <option key={chain} value={chain}>
-                          {chain}
-                        </option>
-                      ))}
+                      {/* Dynamically populate chains */}
                     </select>
                   </div>
-
+                  {/* Auditor Filter */}
                   <div>
                     <label className="block text-xs text-gray-400 mb-1">
                       Auditor
@@ -262,14 +206,10 @@ const DataTable = ({ className }: DataTableProps) => {
                       onChange={(e) => setAuditorFilter(e.target.value || null)}
                     >
                       <option value="">All Auditors</option>
-                      {uniqueAuditors.map((auditor) => (
-                        <option key={auditor} value={auditor}>
-                          {auditor}
-                        </option>
-                      ))}
+                      {/* Dynamically populate auditors */}
                     </select>
                   </div>
-
+                  {/* Rating Range */}
                   <div>
                     <label className="block text-xs text-gray-400 mb-1">
                       Rating Range: {ratingRange.min} - {ratingRange.max}
@@ -301,7 +241,7 @@ const DataTable = ({ className }: DataTableProps) => {
                       className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer"
                     />
                   </div>
-
+                  {/* Action Buttons */}
                   <div className="flex justify-between">
                     <button
                       onClick={resetFilters}
@@ -403,7 +343,6 @@ const DataTable = ({ className }: DataTableProps) => {
             {Math.min(indexOfLastItem, filteredContracts.length)} of{" "}
             {filteredContracts.length} entries
           </div>
-
           <div className="flex gap-2">
             <button
               onClick={() => paginate(Math.max(currentPage - 1, 1))}
@@ -416,7 +355,6 @@ const DataTable = ({ className }: DataTableProps) => {
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
-
             {Array.from({
               length: Math.ceil(filteredContracts.length / itemsPerPage),
             }).map((_, i) => (
@@ -432,7 +370,6 @@ const DataTable = ({ className }: DataTableProps) => {
                 {i + 1}
               </button>
             ))}
-
             <button
               onClick={() =>
                 paginate(
