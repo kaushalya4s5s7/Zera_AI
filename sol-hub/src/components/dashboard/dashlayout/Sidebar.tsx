@@ -60,7 +60,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <aside className="bg-sidebar w-64 p-5 shadow-lg border-r border-sidebar-border flex flex-col z-10">
+    <aside className="bg-sidebar w-64 p-5 shadow-lg border border-sidebar-border flex flex-col z-10 rounded-2xl m-4">
       <div className="flex items-center gap-3 mb-8 px-4 pt-2">
         <div className="w-8 h-8 bg-primary rounded-md flex items-center justify-center">
           <Shield className="w-5 h-5 text-black" />

@@ -28,16 +28,17 @@
     --input: 240 3.7% 15.9%;
     --ring: 240 4.9% 83.9%;
     --radius: 0.75rem;
-    --color-bg1: rgb(15, 15, 30); /* Deep Midnight Blue */
-    --color-bg2: rgb(45, 45, 85); /* Dark Indigo */
-    --color1: 75, 0, 130; /* Indigo */
-    --color2: 138, 43, 226; /* Blue Violet */
-    --color3: 0, 191, 255; /* Deep Sky Blue */
-    --color4: 72, 61, 139; /* Dark Slate Blue */
-    --color5: 25, 25, 112; /* Midnight Blue */
-    --color-interactive: 255, 69, 0; /* Vibrant Orange-Red for interactive elements */
-    --circle-size: 80%;
-    --blending: overlay; /* Subtle blending for a modern look */
+
+    --color-bg1: #000000;
+    --color-bg2: #0a0a0a;
+    --color1: 0, 255, 140; /* Bright neon green */
+    --color2: 0, 200, 100; /* Medium neon green */
+    --color3: 0, 150, 70; /* Darker neon green */
+    --color4: 0, 100, 50; /* Deep green */
+    --color5: 0, 255, 120; /* Bright neon green variant */
+    --color-interactive: 0, 255, 140;
+    --circle-size: 100vh;
+    --blending: screen;
     --bg-primary: #0f0a1a;
     --bg-secondary: #1a1225;
     --text-primary: #f9fafb;
@@ -152,6 +153,22 @@ main {
   stroke-width: 5;
   stroke-dasharray: 400px;
   stroke-dashoffset: 400px;
+}
+
+.animated-cards::before {
+  @apply pointer-events-none absolute select-none rounded-3xl opacity-0 transition-opacity duration-300 hover:opacity-100;
+  background: radial-gradient(
+    1000px circle at var(--x) var(--y),
+    #c9ee80 0,
+    #eebbe2 10%,
+    #adc0ec 25%,
+    #c9ee80 35%,
+    rgba(255, 255, 255, 0) 50%,
+    transparent 80%
+  );
+  z-index: -1;
+  content: "";
+  inset: -1px;
 }
 
 .link-svgline a:hover svg.link-svgline {

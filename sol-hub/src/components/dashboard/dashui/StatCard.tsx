@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 
 type StatCardProps = {
   title: string;
-  value: string | number;
+  value: number;
   icon: ReactNode;
   trend?: {
     value: number;

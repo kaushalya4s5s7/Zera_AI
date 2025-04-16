@@ -1,26 +1,357 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DashboardLayout from "@/components/dashboard/dashlayout/dashlayout";
 import CodeAnalyzer from "@/components/dashboard/audit/codeAnalyzer";
 import AuditResults from "@/components/dashboard/audit/auditResults";
+import { BrowserProvider } from "ethers";
 import { useToast } from "@/hooks/use-toast";
 import { analyzeContractSecurity } from "../../../../../utils/mistralAI";
+import { keccak256 } from "@ethersproject/keccak256";
+import { toUtf8Bytes } from "@ethersproject/strings";
+import { ethers } from "ethers";
+import useAuditStore from "@/store/auditStore"; // Import the Zustand store
+console.log("useAuditStore:", useAuditStore);
+// ABI of the AuditRegistry contract (import or define it here)
+const AUDIT_REGISTRY_ABI = [
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "bytes32",
+        name: "contractHash",
+        type: "bytes32",
+      },
+      {
+        indexed: false,
+        internalType: "uint8",
+        name: "stars",
+        type: "uint8",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "summary",
+        type: "string",
+      },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "auditor",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "timestamp",
+        type: "uint256",
+      },
+    ],
+    name: "AuditRegistered",
+    type: "event",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "contractHash",
+        type: "bytes32",
+      },
+      {
+        internalType: "uint8",
+        name: "stars",
+        type: "uint8",
+      },
+      {
+        internalType: "string",
+        name: "summary",
+        type: "string",
+      },
+    ],
+    name: "registerAudit",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "startIndex",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "limit",
+        type: "uint256",
+      },
+    ],
+    name: "getAllAudits",
+    outputs: [
+      {
+        internalType: "bytes32[]",
+        name: "contractHashes",
+        type: "bytes32[]",
+      },
+      {
+        internalType: "uint8[]",
+        name: "stars",
+        type: "uint8[]",
+      },
+      {
+        internalType: "string[]",
+        name: "summaries",
+        type: "string[]",
+      },
+      {
+        internalType: "address[]",
+        name: "auditors",
+        type: "address[]",
+      },
+      {
+        internalType: "uint256[]",
+        name: "timestamps",
+        type: "uint256[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "auditor",
+        type: "address",
+      },
+    ],
+    name: "getAuditorHistory",
+    outputs: [
+      {
+        internalType: "bytes32[]",
+        name: "",
+        type: "bytes32[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "contractHash",
+        type: "bytes32",
+      },
+    ],
+    name: "getContractAudits",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "uint8",
+            name: "stars",
+            type: "uint8",
+          },
+          {
+            internalType: "string",
+            name: "summary",
+            type: "string",
+          },
+          {
+            internalType: "address",
+            name: "auditor",
+            type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "timestamp",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct AuditRegistry.AuditEntry[]",
+        name: "",
+        type: "tuple[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "index",
+        type: "uint256",
+      },
+    ],
+    name: "getContractHashByIndex",
+    outputs: [
+      {
+        internalType: "bytes32",
+        name: "",
+        type: "bytes32",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "contractHash",
+        type: "bytes32",
+      },
+    ],
+    name: "getLatestAudit",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "uint8",
+            name: "stars",
+            type: "uint8",
+          },
+          {
+            internalType: "string",
+            name: "summary",
+            type: "string",
+          },
+          {
+            internalType: "address",
+            name: "auditor",
+            type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "timestamp",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct AuditRegistry.AuditEntry",
+        name: "",
+        type: "tuple",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getTotalContracts",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+];
 
+interface AuditIssue {
+  id: string;
+  title: string;
+  description: string;
+  severity: string; // e.g., "critical", "high", "medium", "low", "info"
+  source: string; // e.g., "Mistral", "Slither", "Mythril"
+  line?: number | null; // Optional line number
+  recommendation?: string; // Optional recommendation
+}
+
+// Address of the deployed AuditRegistry contract
+const AUDIT_REGISTRY_ADDRESS = "0x311799344e53106315cbDe72649d7eD8De9A1bfA";
+const parseIssuesFromAuditReport = (auditReport: string): AuditIssue[] => {
+  const issues: AuditIssue[] = [];
+  const lines = auditReport.split("\n");
+
+  let currentIssue: Partial<AuditIssue> = {};
+
+  lines.forEach((line) => {
+    if (line.startsWith("####")) {
+      // Start of a new issue
+      if (currentIssue.id) {
+        issues.push(currentIssue as AuditIssue);
+      }
+      const generateUUID = () => {
+        // Check if crypto.randomUUID is available
+        if (
+          typeof crypto !== "undefined" &&
+          typeof crypto.randomUUID === "function"
+        ) {
+          return crypto.randomUUID();
+        }
+
+        // Fallback implementation
+        return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
+          /[xy]/g,
+          function (c) {
+            const r = (Math.random() * 16) | 0;
+            const v = c === "x" ? r : (r & 0x3) | 0x8;
+            return v.toString(16);
+          }
+        );
+      };
+
+      // Then replace crypto.randomUUID() with generateUUID()
+      // In the parseIssuesFromAuditReport function, change this line:
+      currentIssue = {
+        id: generateUUID(), // Replace crypto.randomUUID()
+        title: line.replace(/####/, "").trim(),
+      };
+    } else if (line.startsWith("- **Description**:")) {
+      currentIssue.description = line
+        .replace(/- \*\*Description\*\*:/, "")
+        .trim();
+    } else if (line.startsWith("- **Affected Function**:")) {
+      currentIssue.source = line
+        .replace(/- \*\*Affected Function\*\*:/, "")
+        .trim();
+    } else if (line.startsWith("- **Mitigation**:")) {
+      currentIssue.recommendation = line
+        .replace(/- \*\*Mitigation\*\*:/, "")
+        .trim();
+    } else if (line.startsWith("- **Severity**:")) {
+      currentIssue.severity = line
+        .replace(/- \*\*Severity\*\*:/, "")
+        .trim()
+        .toLowerCase();
+    }
+  });
+
+  // Push the last issue if it exists
+  if (currentIssue.id) {
+    issues.push(currentIssue as AuditIssue);
+  }
+
+  console.log("Parsed Issues:", issues); // Debugging log
+  return issues;
+};
 const AuditPage = () => {
   const [showResults, setShowResults] = useState(false);
-  const [auditScore, setAuditScore] = useState(0);
-  const [issueCount, setIssueCount] = useState({
-    critical: 0,
-    high: 0,
-    medium: 0,
-    low: 0,
-    info: 0,
-  });
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [auditReport, setAuditReport] = useState("");
-  const { toast } = useToast();
 
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [isRegistering, setIsRegistering] = useState(false);
+
+  const { toast } = useToast();
+  const {
+    auditScore,
+    auditReport,
+    contractHash,
+    issues,
+    isLocked,
+    setAuditScore,
+    setAuditReport,
+    setContractHash,
+    setIssues,
+    setIssueCount,
+    setIsLocked,
+  } = useAuditStore();
+  // Handle code analysis
   const handleAnalyze = async (code: string, chain: string) => {
     if (!code.trim()) {
       toast({
@@ -37,6 +368,20 @@ const AuditPage = () => {
       const auditResults = await analyzeContractSecurity(code, chain);
       setAuditReport(auditResults);
 
+      const generateUniqueHash = () => {
+        const timestamp = Date.now().toString();
+        const randomNum = Math.random().toString();
+        const uniqueString = `${timestamp}-${randomNum}-${code.length}`;
+        return keccak256(toUtf8Bytes(uniqueString));
+      };
+
+      const uniqueHash = generateUniqueHash();
+      setContractHash(uniqueHash);
+
+      const parsedIssues: AuditIssue[] =
+        parseIssuesFromAuditReport(auditResults);
+      setIssues(parsedIssues);
+
       // Calculate issue counts and score
       const lowerReport = auditResults.toLowerCase();
       const critical = (lowerReport.match(/critical/g) || []).length;
@@ -52,10 +397,11 @@ const AuditPage = () => {
       setAuditScore(score);
 
       setShowResults(true);
+      setIsLocked(true);
 
       toast({
         title: "Audit Complete",
-        description: `Audit completed with a score of ${score}%`,
+        description: `Audit completed with a score of ${score}%. Please register the audit on-chain to view details.`,
       });
     } catch (error) {
       console.error("Error analyzing contract:", error);
@@ -66,6 +412,66 @@ const AuditPage = () => {
       });
     } finally {
       setIsAnalyzing(false);
+    }
+  };
+
+  // Debugging state updates
+
+  // Handle audit registration on-chain
+  const handleRegisterAudit = async () => {
+    if (!window.ethereum) {
+      toast({
+        title: "No Wallet Detected",
+        description: "Please install MetaMask or another Ethereum wallet.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!contractHash || !auditReport) {
+      toast({
+        title: "Invalid Input",
+        description: "Failed to register audit. Missing required data.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      setIsRegistering(true);
+
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      await provider.send("eth_requestAccounts", []);
+      const signer = await provider.getSigner();
+      const auditRegistry = new ethers.Contract(
+        AUDIT_REGISTRY_ADDRESS,
+        AUDIT_REGISTRY_ABI,
+        signer
+      );
+
+      // Register the audit on-chain
+      const tx = await auditRegistry.registerAudit(
+        contractHash,
+        Math.floor(auditScore / 20), // Convert score to stars (1-5 scale)
+        auditReport
+      );
+      await tx.wait();
+
+      toast({
+        title: "Audit Registered",
+        description: "The audit has been successfully registered on-chain.",
+      });
+
+      setIsLocked(false); // Unlock the results after registration
+    } catch (error) {
+      console.error("Error registering audit:", error);
+      toast({
+        title: "Error",
+        description: "Failed to register the audit on-chain.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsRegistering(false);
     }
   };
 
@@ -81,11 +487,38 @@ const AuditPage = () => {
       <CodeAnalyzer onAnalyze={handleAnalyze} isAnalyzing={isAnalyzing} />
 
       {showResults && (
-        <AuditResults
-          score={auditScore}
-          issueCount={issueCount}
-          auditReport={auditReport}
-        />
+        <div>
+          {/* Lock Screen */}
+          {isLocked && (
+            <div className="bg-black/80 backdrop-blur border border-white/20 rounded-xl p-6 text-center">
+              <h3 className="text-lg font-semibold text-white mb-4">
+                Audit Results Locked
+              </h3>
+              <p className="text-gray-300 mb-6">
+                To unlock the audit results, please register the audit on-chain.
+              </p>
+              <button
+                onClick={handleRegisterAudit}
+                disabled={isRegistering}
+                className="px-6 py-2 rounded-lg bg-primary text-white hover:bg-primary/80 transition-colors flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+              >
+                {isRegistering ? (
+                  <>
+                    <span className="animate-spin">↻</span>
+                    <span>Registering...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Register Audit</span>
+                  </>
+                )}
+              </button>
+            </div>
+          )}
+
+          {/* Audit Results */}
+          {!isLocked && <AuditResults />}
+        </div>
       )}
     </DashboardLayout>
   );

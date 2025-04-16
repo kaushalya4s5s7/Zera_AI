@@ -9,233 +9,14 @@ import {
   Check,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import {
+  CONTRACT_ADDRESSES,
+  AUDIT_REGISTRY_ABI,
+  CHAIN_CONFIG,
+  type ChainKey,
+} from "../../../../utils/Contract";
 
-// ABI of the AuditRegistry contract (import or define it here)
-const AUDIT_REGISTRY_ABI = [
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "bytes32",
-        name: "contractHash",
-        type: "bytes32",
-      },
-      {
-        indexed: false,
-        internalType: "uint8",
-        name: "stars",
-        type: "uint8",
-      },
-      {
-        indexed: false,
-        internalType: "string",
-        name: "summary",
-        type: "string",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "auditor",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "uint256",
-        name: "timestamp",
-        type: "uint256",
-      },
-    ],
-    name: "AuditRegistered",
-    type: "event",
-  },
-  {
-    inputs: [
-      {
-        internalType: "bytes32",
-        name: "contractHash",
-        type: "bytes32",
-      },
-      {
-        internalType: "uint8",
-        name: "stars",
-        type: "uint8",
-      },
-      {
-        internalType: "string",
-        name: "summary",
-        type: "string",
-      },
-    ],
-    name: "registerAudit",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "startIndex",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "limit",
-        type: "uint256",
-      },
-    ],
-    name: "getAllAudits",
-    outputs: [
-      {
-        internalType: "bytes32[]",
-        name: "contractHashes",
-        type: "bytes32[]",
-      },
-      {
-        internalType: "uint8[]",
-        name: "stars",
-        type: "uint8[]",
-      },
-      {
-        internalType: "string[]",
-        name: "summaries",
-        type: "string[]",
-      },
-      {
-        internalType: "address[]",
-        name: "auditors",
-        type: "address[]",
-      },
-      {
-        internalType: "uint256[]",
-        name: "timestamps",
-        type: "uint256[]",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "auditor",
-        type: "address",
-      },
-    ],
-    name: "getAuditorHistory",
-    outputs: [
-      {
-        internalType: "bytes32[]",
-        name: "",
-        type: "bytes32[]",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "bytes32",
-        name: "contractHash",
-        type: "bytes32",
-      },
-    ],
-    name: "getContractAudits",
-    outputs: [
-      {
-        components: [
-          {
-            internalType: "uint8",
-            name: "stars",
-            type: "uint8",
-          },
-          {
-            internalType: "string",
-            name: "summary",
-            type: "string",
-          },
-          {
-            internalType: "address",
-            name: "auditor",
-            type: "address",
-          },
-          {
-            internalType: "uint256",
-            name: "timestamp",
-            type: "uint256",
-          },
-        ],
-        internalType: "struct AuditRegistry.AuditEntry[]",
-        name: "",
-        type: "tuple[]",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "bytes32",
-        name: "contractHash",
-        type: "bytes32",
-      },
-    ],
-    name: "getLatestAudit",
-    outputs: [
-      {
-        components: [
-          {
-            internalType: "uint8",
-            name: "stars",
-            type: "uint8",
-          },
-          {
-            internalType: "string",
-            name: "summary",
-            type: "string",
-          },
-          {
-            internalType: "address",
-            name: "auditor",
-            type: "address",
-          },
-          {
-            internalType: "uint256",
-            name: "timestamp",
-            type: "uint256",
-          },
-        ],
-        internalType: "struct AuditRegistry.AuditEntry",
-        name: "",
-        type: "tuple",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "getTotalContracts",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-
-  // Add the ABI of your AuditRegistry contract here
-];
-
-// Address of the deployed AuditRegistry contract
-const AUDIT_REGISTRY_ADDRESS = "0x51Fd27380E59310dFDa75C3E4264099461d3737F";
+import useAuditStore from "@/store/auditStore";
 
 type DataTableProps = {
   className?: string;
@@ -248,46 +29,100 @@ const DataTable = ({ className }: DataTableProps) => {
   const [chainFilter, setChainFilter] = useState<string | null>(null);
   const [auditorFilter, setAuditorFilter] = useState<string | null>(null);
   const [ratingRange, setRatingRange] = useState({ min: 0, max: 100 });
-  const [contracts, setContracts] = useState<any[]>([]);
   const itemsPerPage = 5;
   const { toast } = useToast();
 
+  const { contracts, setContracts } = useAuditStore();
+
   // Initialize Ethers provider and contract instance
+  // ...existing imports...
+
+  // Add error handling and logging for contract calls
   useEffect(() => {
     const fetchData = async () => {
       if (window.ethereum) {
         try {
           const provider = new ethers.BrowserProvider(window.ethereum);
           await provider.send("eth_requestAccounts", []);
+          const network = await provider.getNetwork();
+          const chainId = Number(network.chainId);
+
+          if (chainId !== CHAIN_CONFIG.Sepolia.chainId) {
+            toast({
+              title: "Wrong Network",
+              description: "Please switch to Sepolia testnet",
+              variant: "destructive",
+            });
+            return;
+          }
           const signer = await provider.getSigner();
+
+          // Log contract address and network
+          const contractAddress =
+            CONTRACT_ADDRESSES[network.name as ChainKey] ||
+            CONTRACT_ADDRESSES.Sepolia;
+          console.log("Network:", network.name);
+          console.log("Contract Address:", contractAddress);
+
           const auditRegistry = new ethers.Contract(
-            AUDIT_REGISTRY_ADDRESS,
+            contractAddress,
             AUDIT_REGISTRY_ABI,
             signer
           );
 
-          // Fetch all audits from the contract
-          const totalContracts = await auditRegistry.getTotalContracts();
-          const allAudits = [];
-          for (let i = 0; i < totalContracts; i++) {
-            const audit = await auditRegistry.getLatestAudit(i);
-            allAudits.push({
-              id: i,
-              name: `Contract ${i}`, // Replace with actual contract name logic
-              chain: "Ethereum", // Replace with actual chain logic
-              rating: audit.stars * 20, // Convert stars to percentage
-              auditor: audit.auditor,
-              date: new Date(
-                audit.timestamp.toNumber() * 1000
-              ).toLocaleDateString(),
+          try {
+            // Verify contract exists
+            const code = await provider.getCode(contractAddress);
+
+            if (code === "0x") {
+              throw new Error("No contract deployed at this address");
+            }
+
+            // Get total contracts with better error handling
+            const totalContracts = await auditRegistry.getTotalContracts();
+
+            const allAudits = [];
+            const total = Number(totalContracts);
+            console.log("Total Contracts:", total);
+
+            for (let i = 0; i < total; i++) {
+              try {
+                const hash = await auditRegistry.getContractHashByIndex(i);
+                const audit = await auditRegistry.getLatestAudit(hash);
+
+                console.log(audit);
+
+                allAudits.push({
+                  id: i,
+                  name: `Contract ${i}`,
+                  chain: "Ethereum",
+                  rating: Number(audit.stars) * 20,
+                  auditor: audit.auditor,
+                  date: new Date(
+                    Number(audit.timestamp) * 1000
+                  ).toLocaleDateString(),
+                });
+              } catch (error) {
+                console.error(`Error fetching audit ${i}:`, error);
+                continue;
+              }
+            }
+            setContracts(allAudits);
+          } catch (error) {
+            console.error("Contract call error:", error);
+            toast({
+              title: "Contract Error",
+              description:
+                "Failed to read from the smart contract. Please verify the contract address and network.",
+              variant: "destructive",
             });
           }
-          setContracts(allAudits);
         } catch (error) {
-          console.error("Error fetching data from contract:", error);
+          console.error("Provider/Signer error:", error);
           toast({
-            title: "Error",
-            description: "Failed to fetch data from the contract.",
+            title: "Wallet Error",
+            description:
+              "Failed to connect to your wallet. Please check your connection and network.",
             variant: "destructive",
           });
         }

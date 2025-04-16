@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { useSupabase } from "@/hooks/useSupabase";
 import { useRouter } from "next/navigation";
 import { useWallet } from "@/hooks/useWallet";
+import useAuditStore from "@/store/auditStore"; // Import the Zustand store
 
 const Dashboard = () => {
   const { isConnected, address } = useWallet();
@@ -17,6 +18,8 @@ const Dashboard = () => {
   const [profile, setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter(); // Add this (import from 'next/navigation')
+
+  const { auditScore } = useAuditStore();
 
   useEffect(() => {
     if (!isConnected) {
@@ -60,30 +63,30 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
         <StatCard
           title="Audit Score"
-          value="92.8%"
+          value={Number(auditScore) || 0}
           icon={<ShieldCheck className="w-5 h-5" />}
           trend={{ value: 4.2, isPositive: true }}
-          colorClass="bg-primary"
+          colorClass="bg-green/80"
         />
         <StatCard
           title="Total Contracts"
-          value="32"
-          icon={<ActivitySquare className="w-5 h-5" />}
+          value={Number(32)}
+          icon={<ActivitySquare className="w-5 h-5 " />}
           trend={{ value: 12, isPositive: true }}
-          colorClass="bg-secondary"
+          colorClass="bg-green/80"
         />
         <StatCard
           title="Audits Completed"
-          value="18"
+          value={Number(32)}
           icon={<BarChart3 className="w-5 h-5" />}
           trend={{ value: 8, isPositive: true }}
           colorClass="bg-orange/80"
         />
         <StatCard
           title="Security Rating"
-          value="A+"
+          value={Number(32)}
           icon={<Trophy className="w-5 h-5" />}
-          colorClass="bg-cyan"
+          colorClass="bg-yellow/80"
         />
       </div>
 

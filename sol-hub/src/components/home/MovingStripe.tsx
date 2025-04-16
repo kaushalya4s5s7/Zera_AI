@@ -26,7 +26,7 @@ const MovingStrip = ({
     direction === "right" ? "animate-direction-reverse" : "";
 
   return (
-    <div className="w-full overflow-hidden bg-black py-4 relative z-10">
+    <div className="w-full overflow-hidden bg-black py-2 relative z-10">
       {/* Background blur */}
       <div className="absolute inset-0 border-4 border-white bg-black/30 backdrop-blur-sm z-0"></div>
 
@@ -40,7 +40,7 @@ const MovingStrip = ({
           {[...items, ...items].map((item, index) => (
             <div key={index} className="mx-6 flex items-center">
               <span
-                className={`text-2xl md:text-5xl font-extrabold ${item.color}`}
+                className={`text-1xl md:text-5xl font-extrabold ${item.color}`}
               >
                 {item.text}
               </span>

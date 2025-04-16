@@ -11,7 +11,14 @@ interface AuditIssue {
   line?: number | null;
   recommendation?: string;
 }
-
+interface Contract {
+  id: number;
+  name: string;
+  chain: string;
+  rating: number;
+  auditor: string;
+  date: string;
+}
 // Define issue count interface
 interface IssueCount {
   critical: number;
@@ -27,11 +34,13 @@ interface AuditStore {
   auditScore: number;
   auditReport: string;
   contractHash: string;
+  contracts: Contract[]; // Assuming contracts is an array of strings
   issues: AuditIssue[];
   issueCount: IssueCount;
   isLocked: boolean;
 
   // Actions
+  setContracts: (contracts: Contract[]) => void; // Assuming contracts is an array of strings
   setAuditScore: (score: number) => void;
   setAuditReport: (report: string) => void;
   setContractHash: (hash: string) => void;
@@ -48,6 +57,7 @@ const useAuditStore = create<AuditStore>()((set) => ({
   // Initial state
   auditScore: 0,
   auditReport: "",
+  contracts: [], // Assuming contracts is an array of strings
   contractHash: "",
   issues: [],
   issueCount: {
@@ -60,6 +70,7 @@ const useAuditStore = create<AuditStore>()((set) => ({
   isLocked: true,
 
   // Actions
+  setContracts: (contracts) => set({ contracts }),
   setAuditScore: (score) => set({ auditScore: score }),
   setAuditReport: (report) => set({ auditReport: report }),
   setContractHash: (hash) => set({ contractHash: hash }),
@@ -73,6 +84,7 @@ const useAuditStore = create<AuditStore>()((set) => ({
       auditScore: 0,
       auditReport: "",
       contractHash: "",
+      contracts: [],
       issues: [],
       issueCount: {
         critical: 0,

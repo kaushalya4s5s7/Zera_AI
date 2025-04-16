@@ -62,7 +62,7 @@ export async function generateSmartContract(
 }
 
 export async function analyzeContractSecurity(code: string, chain: string) {
-  const systemPrompt = `You are a smart contract security expert. Analyze the following contract code for security vulnerabilities, potential optimizations and best practices. Focus on issues specific to ${chain} blockchain. Format your response with clear headings and bullet points. Include severity levels for each issue.`;
+  const systemPrompt = `You are a smart contract security expert. Analyze the following contract code for security vulnerabilities, potential gas optimizations and best practices. Focus on issues specific to ${chain} blockchain. Format your response with clear headings and bullet points. Include severity levels for each issue.`;
 
   return callMistralAI({
     messages: [

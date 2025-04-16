@@ -64,6 +64,17 @@ export default {
           ring: "hsl(var(--sidebar-ring))",
         },
         navy: "#080220",
+        neon: {
+          DEFAULT: "#00ff8c",
+          dark: "#00cc70",
+          darker: "#009654",
+          darkest: "#006038",
+        },
+        dark: {
+          DEFAULT: "#000000",
+          light: "#050505",
+          lighter: "#101010",
+        },
         purple: {
           light: "#9b87f5",
           DEFAULT: "#7E69AB",
@@ -84,6 +95,11 @@ export default {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      boxShadow: {
+        "neon-sm": "0 0 5px rgba(0, 255, 140, 0.2)",
+        neon: "0 0 10px rgba(0, 255, 140, 0.4)",
+        "neon-lg": "0 0 20px rgba(0, 255, 140, 0.6)",
       },
       keyframes: {
         "accordion-down": {
@@ -137,6 +153,7 @@ export default {
         },
       },
       animation: {
+        glow: "glow 6s ease-in-out infinite",
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         float: "float 6s ease-in-out infinite",
