@@ -8,8 +8,10 @@ import {
   Check,
   ExternalLink,
 } from "lucide-react";
+import useAuditStore from "@/store/auditStore";
 
 const SeverityBadge = ({ severity }: { severity: string }) => {
+  const validSeverity = severity || "unknown";
   const getBadgeStyles = () => {
     switch (severity) {
       case "critical":
@@ -26,7 +28,7 @@ const SeverityBadge = ({ severity }: { severity: string }) => {
   };
 
   const getIcon = () => {
-    switch (severity) {
+    switch (validSeverity) {
       case "critical":
       case "high":
         return <AlertTriangle className="w-3 h-3" />;
@@ -44,10 +46,22 @@ const SeverityBadge = ({ severity }: { severity: string }) => {
       className={`px-2 py-0.5 rounded text-xs border flex items-center gap-1 ${getBadgeStyles()}`}
     >
       {getIcon()}
-      <span>{severity.charAt(0).toUpperCase() + severity.slice(1)}</span>
+      <span>
+        {validSeverity.charAt(0).toUpperCase() + validSeverity.slice(1)}
+      </span>
     </div>
   );
 };
+
+interface AuditIssue {
+  id: string;
+  title: string;
+  description: string;
+  severity: string;
+  source: string; // Which tool found the issue (Mistral, Slither, Mythril)
+  line?: number | null;
+  recommendation?: string;
+}
 
 interface AuditResultsProps {
   score: number;
@@ -58,14 +72,19 @@ interface AuditResultsProps {
     low: number;
     info: number;
   };
+  issues?: AuditIssue[]; // Make issues optional
   auditReport: string;
 }
 
-const AuditResults = ({
-  score,
-  issueCount,
-  auditReport,
-}: AuditResultsProps) => {
+const AuditResults = () => {
+  const [selectedIssue, setSelectedIssue] = useState<AuditIssue | null>(null);
+
+  const { issues, auditScore, auditReport, issueCount } = useAuditStore();
+
+  console.log("Issues in AuditResults:", issues); // Debugging log
+  console.log("Audit Report in AuditResults:", auditReport); // Debugging log
+  console.log("Score in AuditResults:", auditScore); // Debugging log
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
       {/* Audit Summary */}
@@ -75,14 +94,14 @@ const AuditResults = ({
           Overall Security Score:{" "}
           <span
             className={`font-bold ${
-              score >= 80
+              auditScore >= 80
                 ? "text-green-400"
-                : score >= 60
+                : auditScore >= 60
                 ? "text-yellow-400"
                 : "text-red-400"
             }`}
           >
-            {score}%
+            {auditScore}%
           </span>
         </p>
         <div className="mt-4 grid grid-cols-2 md:grid-cols-5 gap-4">
@@ -101,15 +120,98 @@ const AuditResults = ({
         </div>
       </div>
 
-      {/* Audit Report */}
-      <div className="lg:col-span-4 bg-white/10 backdrop-blur border border-white/20 rounded-xl p-6">
-        <h3 className="text-lg font-semibold text-white mb-4">Audit Report</h3>
-        <pre className="text-sm text-gray-300 bg-black p-4 rounded-lg overflow-auto">
-          {auditReport}
-        </pre>
+      {/* Detailed Issues */}
+      <div className="lg:col-span-4 bg-white/10 backdrop-blur border border-white/20 rounded-xl p-6 mt-6">
+        <h3 className="text-lg font-semibold text-white mb-4">
+          Detailed Issues
+        </h3>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Issue List */}
+          <div className="md:col-span-1 bg-black/20 rounded-lg p-4 overflow-auto max-h-[500px]">
+            {issues.length > 0 ? (
+              issues.map((issue: AuditIssue) => (
+                <div
+                  key={issue.id}
+                  onClick={() => setSelectedIssue(issue)}
+                  className={`p-3 mb-2 rounded-lg cursor-pointer border ${
+                    selectedIssue?.id === issue.id
+                      ? "border-primary bg-primary/10"
+                      : "border-white/10 hover:bg-white/5"
+                  }`}
+                >
+                  <div className="flex justify-between items-start mb-2">
+                    <div className="text-sm text-white font-medium truncate pr-2">
+                      {issue.title}
+                    </div>
+                    <SeverityBadge severity={issue.severity} />
+                  </div>
+                  <div className="text-xs text-gray-400">
+                    {issue.source} {issue.line ? `• Line ${issue.line}` : ""}
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="text-gray-400 text-sm text-center">
+                No issues found.
+              </div>
+            )}
+          </div>
+
+          {/* Issue Details */}
+          <div className="md:col-span-2 bg-black/20 rounded-lg p-4">
+            {selectedIssue ? (
+              <div>
+                <div className="flex justify-between items-center mb-4">
+                  <h4 className="text-white font-medium">
+                    {selectedIssue.title}
+                  </h4>
+                  <SeverityBadge severity={selectedIssue.severity} />
+                </div>
+
+                <div className="mb-4">
+                  <div className="text-xs text-gray-400 mb-1">Source</div>
+                  <div className="text-sm text-white">
+                    {selectedIssue.source}
+                  </div>
+                </div>
+
+                {selectedIssue.line && (
+                  <div className="mb-4">
+                    <div className="text-xs text-gray-400 mb-1">Location</div>
+                    <div className="text-sm text-white">
+                      Line {selectedIssue.line}
+                    </div>
+                  </div>
+                )}
+
+                <div className="mb-4">
+                  <div className="text-xs text-gray-400 mb-1">Description</div>
+                  <div className="text-sm text-white whitespace-pre-wrap">
+                    {selectedIssue.description}
+                  </div>
+                </div>
+
+                {selectedIssue.recommendation && (
+                  <div className="mb-4">
+                    <div className="text-xs text-gray-400 mb-1">
+                      Recommendation
+                    </div>
+                    <div className="text-sm text-white">
+                      {selectedIssue.recommendation}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="flex items-center justify-center h-full text-gray-400">
+                Select an issue to view details
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
 };
-
 export default AuditResults;
