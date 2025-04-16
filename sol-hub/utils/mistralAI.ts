@@ -1,5 +1,11 @@
-const MISTRAL_API_KEY = "4Hk5KPNIv56QTS9Gnr3PPW8Xw3k2afBt";
-const MISTRAL_API_URL = "https://api.mistral.ai/v1/chat/completions";
+if (!process.env.MISTRAL_API_KEY || !process.env.MISTRAL_API_URL) {
+  throw new Error(
+    "Missing required environment variables: MISTRAL_API_KEY or MISTRAL_API_URL"
+  );
+}
+
+const MISTRAL_API_KEY = process.env.MISTRAL_API_KEY;
+const MISTRAL_API_URL = process.env.MISTRAL_API_URL;
 
 interface MistralRequestOptions {
   messages: {
