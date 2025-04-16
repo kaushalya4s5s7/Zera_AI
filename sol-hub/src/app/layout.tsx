@@ -5,7 +5,7 @@ import { Toaster } from "@/components/ui/sonner";
 import Providers from "@/components/home/Providers";
 
 export const metadata: Metadata = {
-  title: "SolHub",
+  title: "Zera",
   description: "Test, Analyze, Audit and Deploy",
 };
 
