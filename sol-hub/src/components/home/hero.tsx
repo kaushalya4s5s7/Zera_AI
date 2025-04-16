@@ -10,7 +10,7 @@ const Hero = () => {
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-gradient leading-tight">
               Secure Your{" "}
               <span className="text-gradient-purple">Smart Contracts</span> with
-              SolHub
+              Zera
             </h1>
 
             <p className="text-xl md:text-2xl text-white/80 max-w-lg font-medium">

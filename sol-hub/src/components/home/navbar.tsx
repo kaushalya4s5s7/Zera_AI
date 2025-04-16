@@ -53,7 +53,7 @@ const Navbar = () => {
       <div className="container mx-auto flex items-center justify-between">
         <div className="flex items-center">
           <a href="/" className="text-2xl font-bold text-gradient">
-            SolHub
+            Zera
           </a>
         </div>
 
