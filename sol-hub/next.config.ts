@@ -3,7 +3,6 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   env: {
     MISTRAL_API_KEY: process.env.MISTRAL_API_KEY,
-    MISTRAL_API_URL: process.env.MISTRAL_API_URL,
   },
   images: {
     domains: ["images.unsplash.com", "assets.aceternity.com"],
