@@ -5,8 +5,7 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "env": {
-    "MISTRAL_API_URL": "@mistral_api_url",
-    "MISTRAL_API_KEY": "@mistral_api_key"
+    "MISTRAL_API_KEY": "@MISTRAL_API_KEY"
   },
   "headers": [
     {
