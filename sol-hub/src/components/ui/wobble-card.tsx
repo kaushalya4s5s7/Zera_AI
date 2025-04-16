@@ -3,14 +3,18 @@ import React, { useState } from "react";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 
-export const WobbleCard = ({
+type WobbleCardProps = {
+  children: React.ReactNode;
+  className?: string;
+  containerClassName?: string;
+  onClick?: () => void;
+};
+
+export const WobbleCard: React.FC<WobbleCardProps> = ({
   children,
   containerClassName,
   className,
-}: {
-  children: React.ReactNode;
-  containerClassName?: string;
-  className?: string;
+  onClick,
 }) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
@@ -40,6 +44,7 @@ export const WobbleCard = ({
         "mx-auto w-full bg-indigo-800  relative rounded-2xl overflow-hidden",
         containerClassName
       )}
+      onClick={onClick}
     >
       <div
         className="relative  h-full [background-image:radial-gradient(88%_100%_at_top,rgba(255,255,255,0.5),rgba(255,255,255,0))]  sm:mx-0 sm:rounded-2xl overflow-hidden"

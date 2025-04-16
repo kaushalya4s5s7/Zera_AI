@@ -1,3 +1,4 @@
+'use client';
 import { ActivitySquare, BarChart3, ShieldCheck, Trophy } from "lucide-react";
 import DashboardLayout from "@/components/dashboard/dashlayout/dashlayout";
 import StatCard from "@/components/dashboard/dashui/StatCard";
@@ -16,7 +17,7 @@ const Dashboard = () => {
     { name: "Others", value: 10, color: "#00B8D9" },
   ];
 
-  const { issues, auditScore, auditReport, issueCount } = useAuditStore();
+  const {  auditScore} = useAuditStore();
 
   return (
     <DashboardLayout>

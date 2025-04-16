@@ -31,9 +31,13 @@ const testFrameworks = [
   },
 ];
 
-type TestGeneratorProps = {
-  contractCode?: string;
-};
+interface TestGeneratorProps {
+  isGenerating: boolean;
+  contractCode: string;
+  generatedTests: string;
+  testResults: any;
+  onGenerateTests: (code: string, framework: string) => Promise<void>;
+}
 
 const TestGenerator = ({ contractCode = "" }: TestGeneratorProps) => {
   const [selectedFramework, setSelectedFramework] = useState(

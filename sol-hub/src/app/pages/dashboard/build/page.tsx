@@ -7,15 +7,15 @@ import BarChart from "@/components/dashboard/dashui/BarChart";
 import CircularChart from "@/components/dashboard/dashui/CircularChart";
 import CalendarWidget from "@/components/dashboard/dashui/CalendaerWidget";
 import { useEffect, useState } from "react";
-import { useSupabase } from "@/hooks/useSupabase";
+// import { useSupabase } from "@/hooks/useSupabase";
 import { useRouter } from "next/navigation";
 import { useWallet } from "@/hooks/useWallet";
 import useAuditStore from "@/store/auditStore"; // Import the Zustand store
 
 const Dashboard = () => {
   const { isConnected, address } = useWallet();
-  const { getWalletProfile, isSupabaseConfigured } = useSupabase();
-  const [profile, setProfile] = useState<any>(null);
+  // const { getWalletProfile, isSupabaseConfigured } = useSupabase();
+  const [ setProfile] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const router = useRouter(); // Add this (import from 'next/navigation')
 
@@ -27,25 +27,25 @@ const Dashboard = () => {
       return;
     }
 
-    // Fetch user profile from Supabase if wallet is connected
-    const fetchProfile = async () => {
-      if (address && isSupabaseConfigured) {
-        setLoading(true);
-        try {
-          const { data, success } = await getWalletProfile(address);
-          if (success && data) {
-            setProfile(data);
-          }
-        } catch (error) {
-          console.error("Error fetching wallet profile:", error);
-        } finally {
-          setLoading(false);
-        }
-      }
-    };
+    // // Fetch user profile from Supabase if wallet is connected
+    // const fetchProfile = async () => {
+    //   if (address && isSupabaseConfigured) {
+    //     setLoading(true);
+    //     try {
+    //       const { data, success } = await getWalletProfile(address);
+    //       if (success && data) {
+    //         setProfile(data);
+    //       }
+    //     } catch (error) {
+    //       console.error("Error fetching wallet profile:", error);
+    //     } finally {
+    //       setLoading(false);
+    //     }
+    //   }
+    // };
 
-    fetchProfile();
-  }, [isConnected, router, address, getWalletProfile, isSupabaseConfigured]); // Update
+    // fetchProfile();
+  }, [isConnected, router, address]); // Update
 
   if (!isConnected) {
     return null;

@@ -8,6 +8,14 @@ import {
   simulateTestResults,
 } from "../../../../../utils/mistralAI";
 
+interface TestGeneratorProps {
+  isGenerating: boolean;
+  contractCode: string;
+  generatedTests: string;
+  testResults: any;
+  onGenerateTests: (code: string, framework: string) => Promise<void>;
+}
+
 const TestPage = () => {
   const [contractCode, setContractCode] = useState("");
   const [isGeneratingTests, setIsGeneratingTests] = useState(false);

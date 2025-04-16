@@ -5,8 +5,6 @@ import {
   AlertTriangle,
   AlertCircle,
   Info,
-  Check,
-  ExternalLink,
 } from "lucide-react";
 import useAuditStore from "@/store/auditStore";
 
@@ -63,18 +61,18 @@ interface AuditIssue {
   recommendation?: string;
 }
 
-interface AuditResultsProps {
-  score: number;
-  issueCount: {
-    critical: number;
-    high: number;
-    medium: number;
-    low: number;
-    info: number;
-  };
-  issues?: AuditIssue[]; // Make issues optional
-  auditReport: string;
-}
+// interface AuditResultsProps {
+//   score: number;
+//   issueCount: {
+//     critical: number;
+//     high: number;
+//     medium: number;
+//     low: number;
+//     info: number;
+//   };
+//   issues?: AuditIssue[]; // Make issues optional
+//   auditReport: string;
+// }
 
 const AuditResults = () => {
   const [selectedIssue, setSelectedIssue] = useState<AuditIssue | null>(null);

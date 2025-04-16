@@ -8,7 +8,6 @@ import {
   Tooltip,
   ResponsiveContainer,
   Legend,
-  defs,
 } from "recharts";
 
 const data = [

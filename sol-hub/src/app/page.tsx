@@ -1,26 +1,23 @@
 "use client";
 
-import AnimatedBalloons from "@/components/home/AnimatedBalloons";
-import Navbar from "@/components/home/Navbar";
+
+import Navbar from "@/components/home/navbar";
 import Hero from "@/components/home/hero";
 import Features from "@/components/home/Features";
-import HowItWorks from "@/components/home/HowItWorks";
-import Testimonials from "@/components/home/Testimonial";
 import CTA from "@/components/home/CTA";
 import WobbleCardDemo from "@/components/home/WobbleCardDemo";
-import Footer from "@/components/home/Footer";
+import Footer from "@/components/home/footer";
 import FeaturesSectionDemo from "@/components/home/featuresdemo";
-import FeatureCarousel from "@/components/home/FeatureCorousel";
 
 const HomePage = () => {
-  const movingStripItems = [
-    { text: "SMART CONTRACT AUDIT", color: "text-purple-light" },
-    { text: "VULNERABILITY DETECTION", color: "text-orange-light" },
-    { text: "SECURE DEPLOYMENT", color: "text-purple" },
-    { text: "GAS OPTIMIZATION", color: "text-orange" },
-    { text: "BLOCKCHAIN SECURITY", color: "text-purple-light" },
-    { text: "DEFI PROTECTION", color: "text-orange-light" },
-  ];
+  // const movingStripItems = [
+  //   { text: "SMART CONTRACT AUDIT", color: "text-purple-light" },
+  //   { text: "VULNERABILITY DETECTION", color: "text-orange-light" },
+  //   { text: "SECURE DEPLOYMENT", color: "text-purple" },
+  //   { text: "GAS OPTIMIZATION", color: "text-orange" },
+  //   { text: "BLOCKCHAIN SECURITY", color: "text-purple-light" },
+  //   { text: "DEFI PROTECTION", color: "text-orange-light" },
+  // ];
 
   return (
     <div className="min-h-screen bg-background">

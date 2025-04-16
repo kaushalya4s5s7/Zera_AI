@@ -1,10 +1,16 @@
 "use client";
 
-import { useState, useEffect } from "react";
+// Extend the Window interface to include the ethereum property
+declare global {
+  interface Window {
+    ethereum?: any;
+  }
+}
+
+import { useState } from "react";
 import DashboardLayout from "@/components/dashboard/dashlayout/dashlayout";
 import CodeAnalyzer from "@/components/dashboard/audit/codeAnalyzer";
 import AuditResults from "@/components/dashboard/audit/auditResults";
-import { BrowserProvider } from "ethers";
 import { useToast } from "@/hooks/use-toast";
 import { analyzeContractSecurity } from "../../../../../utils/mistralAI";
 import { keccak256 } from "@ethersproject/keccak256";
@@ -342,7 +348,6 @@ const AuditPage = () => {
     auditScore,
     auditReport,
     contractHash,
-    issues,
     isLocked,
     setAuditScore,
     setAuditReport,
