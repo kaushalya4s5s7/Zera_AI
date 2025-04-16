@@ -1,16 +1,16 @@
-// app/page.tsx
 "use client";
 
-import AnimatedParticles from "@/components/home/AnimatedParticles";
 import AnimatedBalloons from "@/components/home/AnimatedBalloons";
 import Navbar from "@/components/home/Navbar";
-import Hero from "@/components/home/Hero";
+import Hero from "@/components/home/hero";
 import Features from "@/components/home/Features";
-import MovingStrip from "@/components/home/MovingStripe";
 import HowItWorks from "@/components/home/HowItWorks";
 import Testimonials from "@/components/home/Testimonial";
 import CTA from "@/components/home/CTA";
+import WobbleCardDemo from "@/components/home/WobbleCardDemo";
 import Footer from "@/components/home/Footer";
+import FeaturesSectionDemo from "@/components/home/featuresdemo";
+import FeatureCarousel from "@/components/home/FeatureCorousel";
 
 const HomePage = () => {
   const movingStripItems = [
@@ -24,25 +24,32 @@ const HomePage = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <AnimatedParticles />
-      <AnimatedBalloons />
       <Navbar />
       <main>
         <Hero />
-        <MovingStrip items={movingStripItems} speed="normal" />
+        <WobbleCardDemo />
+        <FeaturesSectionDemo />
         <Features />
-        <MovingStrip
-          items={[
-            { text: "24/7 MONITORING", color: "text-orange" },
-            { text: "AI VULNERABILITY SCANNER", color: "text-purple" },
-            { text: "MULTI-CHAIN SUPPORT", color: "text-orange-light" },
-            { text: "EXPERT AUDIT TEAM", color: "text-purple-light" },
-          ]}
-          direction="right"
-          speed="fast"
-        />
-        <HowItWorks />
-        <Testimonials />
+        {/* <FeatureCarousel
+          title="How SexAudit Works"
+          description="All in one Solution"
+          image={{
+            step1light1:
+              "https://img.freepik.com/free-vector/www-internet-globe-grid_78370-2008.jpg?t=st=1744798138~exp=1744801738~hmac=5ef7077648da04c0840864405aa2cadb9fe5f9b9d6a433916c35314631516ca9&w=900",
+            step1light2:
+              "https://img.freepik.com/free-vector/cyber-security-concept_23-2148543851.jpg?t=st=1744798200~exp=1744801800~hmac=3f19249dd5f49c30e99c41f28336e601c50051410eb03e3e937a97bfa9ea00f4&w=900",
+            step2light1:
+              "https://img.freepik.com/free-vector/gradient-international-internet-day-illustration_23-2150741460.jpg?t=st=1744798250~exp=1744801850~hmac=1d7b41959c6ae267760d68bb0135a6e4c601b31483865524da3d7c65c8ccc9f2&w=900",
+            step2light2:
+              "https://img.freepik.com/free-vector/gradient-international-internet-day-illustration_23-2150741460.jpg?t=st=1744798250~exp=1744801850~hmac=1d7b41959c6ae267760d68bb0135a6e4c601b31483865524da3d7c65c8ccc9f2&w=900",
+            step3light:
+              "https://img.freepik.com/free-vector/gradient-international-internet-day-illustration_23-2150741460.jpg?t=st=1744798250~exp=1744801850~hmac=1d7b41959c6ae267760d68bb0135a6e4c601b31483865524da3d7c65c8ccc9f2&w=900",
+            step4light:
+              "https://img.freepik.com/free-vector/gradient-international-internet-day-illustration_23-2150741460.jpg?t=st=1744798250~exp=1744801850~hmac=1d7b41959c6ae267760d68bb0135a6e4c601b31483865524da3d7c65c8ccc9f2&w=900",
+            alt: "Feature showcase",
+          }}
+        /> */}
+        {/* <Testimonials /> */}
         <CTA />
       </main>
       <Footer />
