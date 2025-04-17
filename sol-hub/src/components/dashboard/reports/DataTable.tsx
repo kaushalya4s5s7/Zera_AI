@@ -92,10 +92,11 @@ const DataTable = ({ className }: DataTableProps) => {
 
                 console.log(audit);
 
+                
                 allAudits.push({
                   id: i,
                   name: `Contract ${i}`,
-                  chain: "Ethereum",
+                  chain: "Binance Smart Chain",
                   rating: Number(audit.stars) * 20,
                   auditor: audit.auditor,
                   date: new Date(
