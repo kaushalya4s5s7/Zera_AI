@@ -91,7 +91,7 @@ const Header = () => {
     <header className="h-16 border-b border-white/10 bg-slate-900-light/10 backdrop-blur-md px-6 flex items-center justify-between z-10">
       <div>
         <h1 className="text-lg font-semibold text-black">
-          Welcome back, <span className="text-primary">{user.name}</span>
+          
         </h1>
       </div>
 

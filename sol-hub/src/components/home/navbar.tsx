@@ -52,7 +52,7 @@ const Navbar = () => {
     >
       <div className="container mx-auto flex items-center justify-between">
         <div className="flex items-center">
-          <a href="/" className="text-2xl font-bold text-gradient">
+          <a href="/" className="text-4xl font-extrabold text-gradient">
             Zera
           </a>
         </div>
@@ -65,24 +65,14 @@ const Navbar = () => {
           >
             Features
           </a>
-          <a
-            href="#solutions"
-            className="text-white/80 hover:text-white transition-colors"
-          >
-            Solutions
-          </a>
+          
           <a
             href="#how-it-works"
             className="text-white/80 hover:text-white transition-colors"
           >
             How It Works
           </a>
-          <a
-            href="#pricing"
-            className="text-white/80 hover:text-white transition-colors"
-          >
-            Pricing
-          </a>
+          
         </nav>
 
         <div className="hidden md:flex items-center space-x-4">

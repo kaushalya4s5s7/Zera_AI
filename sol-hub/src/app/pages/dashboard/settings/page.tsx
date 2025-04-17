@@ -333,7 +333,7 @@ const SettingsPage = () => {
 
           <div className="space-y-2 mb-4">
             <p className="text-sm text-gray-300">
-              Use API keys to access SecureWeb3 services programmatically
+              Use API keys to access ZERA services programmatically
             </p>
           </div>
 

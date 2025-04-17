@@ -20,35 +20,12 @@ const Hero = () => {
             </p>
 
             <div className="flex flex-wrap gap-4">
-              <Button className="bg-gradient-to-r from-purple to-orange text-white text-lg px-8 py-6 rounded-lg hover:opacity-90 font-bold">
-                Get Started
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
+              
 
-              <Button
-                variant="outline"
-                className="border-white/20 hover:bg-white/5 text-white text-lg px-8 py-6 rounded-lg font-bold"
-              >
-                Book Demo
-              </Button>
+              
             </div>
 
-            <div className="pt-4">
-              <p className="text-white/60 mb-3 font-medium">
-                Trusted by leading Web3 companies
-              </p>
-              <div className="flex flex-wrap items-center gap-8">
-                <div className="text-white/80 font-bold text-lg">
-                  CryptoFirm
-                </div>
-                <div className="text-white/80 font-bold text-lg">
-                  BlockSecure
-                </div>
-                <div className="text-white/80 font-bold text-lg">
-                  ChainGuard
-                </div>
-              </div>
-            </div>
+          
           </div>
 
           <div className="relative animate-slide-in-right">
@@ -66,18 +43,18 @@ const Hero = () => {
                   </div>
                   <div className="bg-white/10 rounded-lg p-4 text-center">
                     <div className="text-3xl font-extrabold text-gradient-orange">
-                      1500+
+                    10x
                     </div>
                     <div className="text-white/70 text-sm mt-2 font-medium">
-                      Audits Done
+                    Faster Contract Analysis with AI
                     </div>
                   </div>
                   <div className="bg-white/10 rounded-lg p-4 text-center">
                     <div className="text-3xl font-extrabold text-gradient-purple">
-                      $2B+
+                    85%+
                     </div>
                     <div className="text-white/70 text-sm mt-2 font-medium">
-                      Value Secured
+                    Common Vulnerabilities Covered
                     </div>
                   </div>
                 </div>

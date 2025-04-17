@@ -66,7 +66,7 @@ const Sidebar = () => {
           <Shield className="w-5 h-5 text-black" />
         </div>
         <h1 className="text-xl font-bold text-sidebar-foreground">
-          SecureWeb3
+          ZERA
         </h1>
       </div>
 

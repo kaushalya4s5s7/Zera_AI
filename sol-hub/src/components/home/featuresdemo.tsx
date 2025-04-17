@@ -24,20 +24,20 @@ const FeaturesSectionDemo = () => {
       skeleton: <SkeletonTwo />,
       className: "border-b col-span-1 lg:col-span-2 dark:border-neutral-800",
     },
-    {
-      title: "Watch our AI on YouTube",
-      description:
-        "Whether its you or Tyler Durden, you can get to know about our product on YouTube",
-      skeleton: <SkeletonThree />,
-      className:
-        "col-span-1 lg:col-span-3 lg:border-r  dark:border-neutral-800",
-    },
-    {
-      title: "Generate Contract in seconds",
-      description: " ",
-      skeleton: <SkeletonFour />,
-      className: "col-span-1 lg:col-span-3 border-b lg:border-none",
-    },
+    // {
+    //   title: "Watch our AI on YouTube",
+    //   description:
+    //     "Whether its you or Tyler Durden, you can get to know about our product on YouTube",
+    //   skeleton: <SkeletonThree />,
+    //   className:
+    //     "col-span-1 lg:col-span-3 lg:border-r  dark:border-neutral-800",
+    // },
+    // {
+    //   title: "Generate Contract in seconds",
+    //   description: " ",
+    //   skeleton: <SkeletonFour />,
+    //   className: "col-span-1 lg:col-span-3 border-b lg:border-none",
+    // },
   ];
   return (
     <div className="relative z-20 py-10 lg:py-40 max-w-7xl mx-auto">
@@ -112,7 +112,7 @@ export const SkeletonOne = () => {
         <div className="flex flex-1 w-full h-full flex-col space-y-2  ">
           {/* TODO */}
           <Image
-            src="/codeblock.png"
+            src="/codeblock.PNG"
             alt="header"
             width={800}
             height={800}
@@ -167,7 +167,7 @@ export const SkeletonTwo = () => {
   ];
 
   const images = [
-    "/cyber.jpg",
+    "/cyber.png",
     "/matrix-hacker-background.jpg",
     "/peter-conrad-UA8PwPht1Vw-unsplash.jpg",
     "https://images.unsplash.com/photo-1554931670-4ebfabf6e7a9?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",

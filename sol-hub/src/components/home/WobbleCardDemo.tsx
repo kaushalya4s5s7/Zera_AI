@@ -2,9 +2,10 @@
 import Image from "next/image";
 import React from "react";
 import { WobbleCard } from "../ui/wobble-card";
+
 const WobbleCardDemo = () => {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 py-4 max-w-7xl mx-auto w-full">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 py-8 px-4 max-w-7xl mx-auto w-full">
       <WobbleCard
         containerClassName="col-span-1 lg:col-span-2 h-full bg-pink-800 min-h-[500px] lg:min-h-[300px]"
         className=""
@@ -19,7 +20,7 @@ const WobbleCardDemo = () => {
           </p>
         </div>
         <Image
-          src="/codeblock.png"
+          src="/codeblock.PNG"
           width={500}
           height={500}
           alt="linear demo image"
@@ -48,7 +49,7 @@ const WobbleCardDemo = () => {
           </p>
         </div>
         <Image
-          src="/codeblock.png"
+          src="/codeblock.PNG"
           width={500}
           height={500}
           alt="linear demo image"
