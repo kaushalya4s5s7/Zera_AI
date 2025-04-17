@@ -70,21 +70,21 @@ const Dashboard = () => {
         />
         <StatCard
           title="Total Contracts"
-          value={Number(32)}
+          value={Number(1)}
           icon={<ActivitySquare className="w-5 h-5 " />}
           trend={{ value: 12, isPositive: true }}
           colorClass="bg-green/80"
         />
         <StatCard
           title="Audits Completed"
-          value={Number(32)}
+          value={Number(1)}
           icon={<BarChart3 className="w-5 h-5" />}
           trend={{ value: 8, isPositive: true }}
           colorClass="bg-orange/80"
         />
         <StatCard
           title="Security Rating"
-          value={Number(32)}
+          value={Number(4)}
           icon={<Trophy className="w-5 h-5" />}
           colorClass="bg-yellow/80"
         />

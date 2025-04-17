@@ -1,16 +1,16 @@
 export const CHAIN_CONFIG = {
-  Sepolia: {
-    chainId: 11155111,
-    name: "Sepolia",
+  BNB: {
+    chainId: 56,
+    name: "BNB Chain",
     contractAddress: "0x311799344e53106315cbDe72649d7eD8De9A1bfA",
-    explorer: "https://sepolia.etherscan.io",
+    explorer: "https://bscscan.com",
   },
 } as const;
 
 export type ChainKey = keyof typeof CHAIN_CONFIG;
 
 export const CONTRACT_ADDRESSES = {
-  Sepolia: CHAIN_CONFIG.Sepolia.contractAddress,
+  BNB: CHAIN_CONFIG.BNB.contractAddress,
 } as const;
 
 export const AUDIT_REGISTRY_ABI = [

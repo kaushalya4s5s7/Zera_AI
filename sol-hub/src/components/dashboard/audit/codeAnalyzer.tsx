@@ -90,7 +90,7 @@ const CodeAnalyzer = ({ onAnalyze, isAnalyzing }: CodeAnalyzerProps) => {
                 id="chain"
                 value={selectedChain}
                 onChange={(e) => setSelectedChain(e.target.value)}
-                className="bg-white/5 border border-white/20 text-white rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-primary"
+                className="bg-white/5 border border-white/20 text-black rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-primary"
               >
                 {supportedChains.map((chain) => (
                   <option key={chain.id} value={chain.id}>

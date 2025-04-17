@@ -77,7 +77,11 @@ const Sidebar = () => {
             <Link
               key={item.path}
               href={item.path}
-              className={`sidebar-item ${isActive ? "active" : ""}`}
+              className={`sidebar-item ${
+                isActive
+                  ? "bg-primary text-white" // Active state: background primary and text white
+                  : " hover:bg-primary/10 hover:text-white" // Default state
+              }`}
             >
               {item.icon}
               <span>{item.name}</span>

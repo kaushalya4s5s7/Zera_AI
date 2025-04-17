@@ -458,7 +458,7 @@ const AuditPage = () => {
       const tx = await auditRegistry.registerAudit(
         contractHash,
         Math.floor(auditScore / 20), // Convert score to stars (1-5 scale)
-        auditReport
+        "ok"
       );
       await tx.wait();
 

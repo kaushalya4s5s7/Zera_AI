@@ -47,10 +47,10 @@ const DataTable = ({ className }: DataTableProps) => {
           const network = await provider.getNetwork();
           const chainId = Number(network.chainId);
 
-          if (chainId !== CHAIN_CONFIG.Sepolia.chainId) {
+          if (chainId !== CHAIN_CONFIG.BNB.chainId) {
             toast({
               title: "Wrong Network",
-              description: "Please switch to Sepolia testnet",
+              description: "Please switch to BNB Mainnet",
               variant: "destructive",
             });
             return;
@@ -60,7 +60,7 @@ const DataTable = ({ className }: DataTableProps) => {
           // Log contract address and network
           const contractAddress =
             CONTRACT_ADDRESSES[network.name as ChainKey] ||
-            CONTRACT_ADDRESSES.Sepolia;
+            CONTRACT_ADDRESSES.BNB;
           console.log("Network:", network.name);
           console.log("Contract Address:", contractAddress);
 
