@@ -47,10 +47,17 @@ const DataTable = ({ className }: DataTableProps) => {
           const network = await provider.getNetwork();
           const chainId = Number(network.chainId);
 
+<<<<<<< HEAD
           if (chainId !== CHAIN_CONFIG.Educhain.chainId) {
             toast({
               title: "Wrong Network",
               description: "Please switch to Educhain Test Network",
+=======
+          if (chainId !== CHAIN_CONFIG.BNB.chainId) {
+            toast({
+              title: "Wrong Network",
+              description: "Please switch to BNB Mainnet",
+>>>>>>> repoB/main
               variant: "destructive",
             });
             return;
@@ -60,7 +67,13 @@ const DataTable = ({ className }: DataTableProps) => {
           // Log contract address and network
           const contractAddress =
             CONTRACT_ADDRESSES[network.name as ChainKey] ||
+<<<<<<< HEAD
             CONTRACT_ADDRESSES.Educhain;
+=======
+            CONTRACT_ADDRESSES.BNB;
+          console.log("Network:", network.name);
+          console.log("Contract Address:", contractAddress);
+>>>>>>> repoB/main
 
           const auditRegistry = new ethers.Contract(
             contractAddress,
@@ -81,12 +94,17 @@ const DataTable = ({ className }: DataTableProps) => {
 
             const allAudits = [];
             const total = Number(totalContracts);
+<<<<<<< HEAD
+=======
+            console.log("Total Contracts:", total);
+>>>>>>> repoB/main
 
             for (let i = 0; i < total; i++) {
               try {
                 const hash = await auditRegistry.getContractHashByIndex(i);
                 const audit = await auditRegistry.getLatestAudit(hash);
 
+<<<<<<< HEAD
                 
 
 
@@ -95,6 +113,16 @@ const DataTable = ({ className }: DataTableProps) => {
                   name: `Contract ${i}`,
                   chain: "Educhain",
                   rating: Number(audit.stars),
+=======
+                console.log(audit);
+
+                
+                allAudits.push({
+                  id: i,
+                  name: `Contract ${i}`,
+                  chain: "Binance Smart Chain",
+                  rating: Number(audit.stars) * 20,
+>>>>>>> repoB/main
                   auditor: audit.auditor,
                   date: new Date(
                     Number(audit.timestamp) * 1000

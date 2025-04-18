@@ -169,12 +169,20 @@ function useNumberCycler(
 
   // Setup timer function
   const setupTimer = useCallback(() => {
+<<<<<<< HEAD
+=======
+    console.log("Setting up timer");
+>>>>>>> repoB/main
     // Clear any existing timer
     if (timerRef.current) {
       clearTimeout(timerRef.current);
     }
 
     timerRef.current = setTimeout(() => {
+<<<<<<< HEAD
+=======
+      console.log("Timer triggered, advancing to next step");
+>>>>>>> repoB/main
       setCurrentNumber((prev) => (prev + 1) % totalSteps);
       setIsManualInteraction(false);
       // Recursively setup next timer
@@ -184,6 +192,10 @@ function useNumberCycler(
 
   // Handle manual increment
   const increment = useCallback(() => {
+<<<<<<< HEAD
+=======
+    console.log("Manual increment triggered");
+>>>>>>> repoB/main
     setIsManualInteraction(true);
     setCurrentNumber((prev) => (prev + 1) % totalSteps);
 
@@ -193,11 +205,19 @@ function useNumberCycler(
 
   // Initial timer setup and cleanup
   useEffect(() => {
+<<<<<<< HEAD
     
     setupTimer();
 
     return () => {
       
+=======
+    console.log("Initial timer setup");
+    setupTimer();
+
+    return () => {
+      console.log("Cleaning up timer");
+>>>>>>> repoB/main
       if (timerRef.current) {
         clearTimeout(timerRef.current);
       }
@@ -206,7 +226,15 @@ function useNumberCycler(
 
   // Debug logging
   useEffect(() => {
+<<<<<<< HEAD
     
+=======
+    console.log("Current state:", {
+      currentNumber,
+      isManualInteraction,
+      hasTimer: !!timerRef.current,
+    });
+>>>>>>> repoB/main
   }, [currentNumber, isManualInteraction]);
 
   return {

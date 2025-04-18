@@ -35,6 +35,10 @@ export const connectMetamask = async (saveToSupabase = false) => {
     if (saveToSupabase) {
       // The actual saving to Supabase will be handled by the component
       // that calls this function, using the useSupabase hook
+<<<<<<< HEAD
+=======
+      console.log("Wallet address will be saved to Supabase");
+>>>>>>> repoB/main
     } else {
       // Just update Redux state
       store.dispatch(connectWalletSuccess(address));

@@ -17,6 +17,10 @@ import { keccak256 } from "@ethersproject/keccak256";
 import { toUtf8Bytes } from "@ethersproject/strings";
 import { ethers } from "ethers";
 import useAuditStore from "@/store/auditStore"; // Import the Zustand store
+<<<<<<< HEAD
+=======
+console.log("useAuditStore:", useAuditStore);
+>>>>>>> repoB/main
 // ABI of the AuditRegistry contract (import or define it here)
 const AUDIT_REGISTRY_ABI = [
   {
@@ -269,7 +273,11 @@ interface AuditIssue {
 }
 
 // Address of the deployed AuditRegistry contract
+<<<<<<< HEAD
 const AUDIT_REGISTRY_ADDRESS = "0xc1140c23394322b65b99A6C6BdB33387f8A9432D";
+=======
+const AUDIT_REGISTRY_ADDRESS = "0x311799344e53106315cbDe72649d7eD8De9A1bfA";
+>>>>>>> repoB/main
 const parseIssuesFromAuditReport = (auditReport: string): AuditIssue[] => {
   const issues: AuditIssue[] = [];
   const lines = auditReport.split("\n");
@@ -333,6 +341,10 @@ const parseIssuesFromAuditReport = (auditReport: string): AuditIssue[] => {
     issues.push(currentIssue as AuditIssue);
   }
 
+<<<<<<< HEAD
+=======
+  console.log("Parsed Issues:", issues); // Debugging log
+>>>>>>> repoB/main
   return issues;
 };
 const AuditPage = () => {
@@ -440,6 +452,7 @@ const AuditPage = () => {
       return;
     }
 
+<<<<<<< HEAD
     const EDUCHAIN_TESTNET_CHAIN_ID = "0xa045c"; // Hexadecimal equivalent of 656476
     const EDUCHAIN_TESTNET_RPC_URL = "https://rpc.open-campus-codex.gelato.digital";
     const EDUCHAIN_TESTNET_EXPLORER_URL = "https://edu-chain-testnet.blockscout.com";
@@ -500,6 +513,11 @@ const AuditPage = () => {
       }
 
       // Proceed with registering the audit
+=======
+    try {
+      setIsRegistering(true);
+
+>>>>>>> repoB/main
       const provider = new ethers.BrowserProvider(window.ethereum);
       await provider.send("eth_requestAccounts", []);
       const signer = await provider.getSigner();
@@ -509,9 +527,16 @@ const AuditPage = () => {
         signer
       );
 
+<<<<<<< HEAD
       const tx = await auditRegistry.registerAudit(
         contractHash,
         auditScore, // Convert score to stars (1-5 scale)
+=======
+      // Register the audit on-chain
+      const tx = await auditRegistry.registerAudit(
+        contractHash,
+        Math.floor(auditScore / 20), // Convert score to stars (1-5 scale)
+>>>>>>> repoB/main
         "ok"
       );
       await tx.wait();
