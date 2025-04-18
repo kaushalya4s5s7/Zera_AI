@@ -1,10 +1,10 @@
-if (!process.env.MISTRAL_API_KEY ) {
+if (!process.env.NEXT_PUBLIC_MISTRAL_API_KEY) {
   throw new Error(
-    "Missing required environment variables: MISTRAL_API_KEY "
+    "Missing required environment variables: NEXT_PUBLIC_MISTRAL_API_KEY "
   );
 }
 
-const MISTRAL_API_KEY = process.env.MISTRAL_API_KEY;
+const MISTRAL_API_KEY = process.env.NEXT_PUBLIC_MISTRAL_API_KEY;
 const MISTRAL_API_URL = "https://api.mistral.ai/v1/chat/completions";
 
 interface MistralRequestOptions {
