@@ -1,6 +1,5 @@
 "use client";
 
-
 import Navbar from "@/components/home/navbar";
 import Hero from "@/components/home/hero";
 import Features from "@/components/home/Features";

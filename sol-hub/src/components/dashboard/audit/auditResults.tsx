@@ -1,11 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  AlertTriangle,
-  AlertCircle,
-  Info,
-} from "lucide-react";
+import { AlertTriangle, AlertCircle, Info } from "lucide-react";
 import useAuditStore from "@/store/auditStore";
 
 const SeverityBadge = ({ severity }: { severity: string }) => {
@@ -78,14 +74,6 @@ const AuditResults = () => {
   const [selectedIssue, setSelectedIssue] = useState<AuditIssue | null>(null);
 
   const { issues, auditScore, auditReport, issueCount } = useAuditStore();
-
-<<<<<<< HEAD
-  
-=======
-  console.log("Issues in AuditResults:", issues); // Debugging log
-  console.log("Audit Report in AuditResults:", auditReport); // Debugging log
-  console.log("Score in AuditResults:", auditScore); // Debugging log
->>>>>>> repoB/main
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">

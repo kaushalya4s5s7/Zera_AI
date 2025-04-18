@@ -39,14 +39,8 @@ const supportedChains = [
   { id: "ethereum", name: "Ethereum" },
   { id: "polygon", name: "Polygon" },
   { id: "arbitrum", name: "Arbitrum" },
-<<<<<<< HEAD
   { id: "bsc", name: "BSC" },
-  {id: "Educhain", name: "Educhain"},
-=======
-  { id: "optimism", name: "Optimism" },
-  { id: "bsc", name: "BSC" },
-  { id: "avalanche", name: "Avalanche" },
->>>>>>> repoB/main
+  { id: "Educhain", name: "Educhain" },
 ];
 
 type CodeAnalyzerProps = {
