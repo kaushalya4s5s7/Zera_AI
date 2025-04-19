@@ -43,7 +43,6 @@ interface ImageSet {
   step2dark1?: StaticImageData | string;
   step2dark2?: StaticImageData | string;
   step2light1: StaticImageData | string;
-  step2light2: StaticImageData | string;
   step3dark?: StaticImageData | string;
   step3light: StaticImageData | string;
   step4light: StaticImageData | string;
@@ -54,7 +53,6 @@ interface FeatureCarouselProps extends CardProps {
   step1img1Class?: string;
   step1img2Class?: string;
   step2img1Class?: string;
-  step2img2Class?: string;
   step3imgClass?: string;
   step4imgClass?: string;
   image: ImageSet;
@@ -83,26 +81,26 @@ const steps = [
   {
     id: "1",
     name: "Step 1",
-    title: "Feature 1",
-    description: "Feature 1 description  ",
+    title: "Generate Your Contract",
+    description: "Quickly scaffold secure, ready-to-deploy smart contracts.",
   },
   {
     id: "2",
     name: "Step 2",
-    title: "Feature 2",
-    description: "Feature 2 description",
+    title: "Test Your Contract",
+    description: "Simulate real scenarios to catch bugs before deployment.",
   },
   {
     id: "3",
     name: "Step 3",
-    title: "Feature 3",
-    description: "Feature 3 description",
+    title: "Audit Your Contract",
+    description: "Run AI-powered checks to ensure contract security.",
   },
   {
     id: "4",
     name: "Step 4",
-    title: "Feature 4",
-    description: "Feature 4 description",
+    title: "Document Your Contract",
+    description: "Auto-generate clean, developer-friendly documentation.",
   },
 ] as const;
 
@@ -518,8 +516,7 @@ const defaultClasses = {
     "pointer-events-none w-[60%] border border-border-100/10 dark:border-border-700/50 transition-all duration-500 overflow-hidden rounded-2xl",
   step2img1:
     "pointer-events-none w-[50%] border border-border-100/10 transition-all duration-500 dark:border-border-700 rounded-2xl overflow-hidden",
-  step2img2:
-    "pointer-events-none w-[40%] border border-border-100/10 dark:border-border-700 transition-all duration-500 rounded-2xl overflow-hidden",
+
   step3img:
     "pointer-events-none w-[90%] border border-border-100/10 dark:border-border-700 rounded-2xl transition-all duration-500 overflow-hidden",
   step4img:
@@ -536,7 +533,6 @@ const FeatureCarousel = ({
   step1img1Class = defaultClasses.step1img1,
   step1img2Class = defaultClasses.step1img2,
   step2img1Class = defaultClasses.step2img1,
-  step2img2Class = defaultClasses.step2img2,
   step3imgClass = defaultClasses.step3img,
   step4imgClass = defaultClasses.step4img,
   ...props
@@ -608,13 +604,6 @@ const FeatureCarousel = ({
                 src={image.step2light1}
                 preset="fadeInScale"
               />
-              <AnimatedStepImage
-                alt={image.alt}
-                className={clsx(step2img2Class, "rounded-2xl")}
-                src={image.step2light2}
-                preset="fadeInScale"
-                delay={0.1}
-              />
             </motion.div>
           );
         case 2:
@@ -656,7 +645,7 @@ const FeatureCarousel = ({
               <AnimatedStepImage
                 alt={image.alt}
                 className="pointer-events-none top-[50%] w-[90%] overflow-hidden rounded-2xl border border-neutral-100/10 md:left-[35px] md:top-[30%] md:w-full dark:border-zinc-700"
-                src="/cyber.png"
+                src="/documentor.PNG"
                 preset="fadeInScale"
                 delay={0.1}
               />

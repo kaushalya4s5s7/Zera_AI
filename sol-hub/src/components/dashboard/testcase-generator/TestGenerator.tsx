@@ -10,6 +10,8 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { generateContractTests } from "../../../../utils/mistralAI";
 
+import { WobbleCard } from "@/components/ui/wobble-card";
+
 const testFrameworks = [
   {
     id: "hardhat",
@@ -112,15 +114,13 @@ const TestGenerator = ({ contractCode = "" }: TestGeneratorProps) => {
               }`}
               onClick={() => setSelectedFramework(framework.id)}
             >
-              <div className="flex items-center gap-3">
+              <WobbleCard className="flex  items-center gap-3">
                 <div className="text-2xl">{framework.icon}</div>
                 <div>
                   <h4 className="font-semibold text-white">{framework.name}</h4>
-                  <p className="text-sm text-gray-400">
-                    {framework.description}
-                  </p>
+                  <p className="text-sm text-white">{framework.description}</p>
                 </div>
-              </div>
+              </WobbleCard>
             </div>
           ))}
         </div>
