@@ -66,8 +66,8 @@ const ContractTemplateSelector = ({ onSelect }: ContractTemplateProps) => {
           )}
         </WobbleCard>
 
-        <div
-          className={`relative p-6 rounded-lg border transition-all cursor-pointer 
+        <WobbleCard
+          className={`relative p-6 bg-pink-dark rounded-lg border transition-all cursor-pointer 
           shadow-[0_8px_30px_rgb(0,0,0,0.12)]
             ${
               selected === "nft"
@@ -101,7 +101,7 @@ const ContractTemplateSelector = ({ onSelect }: ContractTemplateProps) => {
           {selected === "nft" && (
             <div className="absolute top-3 right-3 w-4 h-4 bg-primary rounded-full"></div>
           )}
-        </div>
+        </WobbleCard>
       </div>
     </div>
   );
