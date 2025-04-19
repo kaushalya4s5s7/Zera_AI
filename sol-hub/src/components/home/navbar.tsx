@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -47,13 +48,20 @@ const Navbar = () => {
   return (
     <header
       className={`fixed top-0 left-0 right-0 w-full z-50 transition-all duration-300 ${
-        isScrolled ? "glass-morphism py-2" : "py-4"
+        isScrolled ? "glass-morphism  py-1" : "py-1"
       }`}
     >
-      <div className="container mx-auto flex items-center justify-between">
-        <div className="flex items-center">
-          <a href="/" className="text-4xl font-extrabold text-gradient">
-            Zera
+      <div className="container mx-auto flex items-center justify-between py-0">
+        <div className="flex  items-center">
+          <a href="/">
+            <Image
+              src="/Zera_Logo-removebg-preview.png" // Ensure this path is correct relative to the public folder
+              alt="Zera Logo"
+              width={75} // Adjust these values based on your logo size
+              height={25}
+              className="object-contain rounded-2xl"
+              priority
+            />
           </a>
         </div>
 
@@ -65,14 +73,13 @@ const Navbar = () => {
           >
             Features
           </a>
-          
+
           <a
             href="#how-it-works"
             className="text-white/80 hover:text-white transition-colors"
           >
             How It Works
           </a>
-          
         </nav>
 
         <div className="hidden md:flex items-center space-x-4">
