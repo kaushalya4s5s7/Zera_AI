@@ -80,7 +80,7 @@ npm run dev
 Have questions or need support?
 
 📩 Email: zeraaihelp@gmail.com
-🌐 Visit: zera-707t.onrender.com
+🌐 Visit: zera-ai.onrender.com
 
 📢 Contributing
 We welcome community collaboration!
