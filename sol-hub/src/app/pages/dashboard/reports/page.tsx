@@ -8,7 +8,7 @@ const ReportsPage = () => {
       <div className="mb-6">
         <h2 className="text-2xl font-bold text-white mb-1">Reports</h2>
         <p className="text-gray-300">
-          View and analyze your contract audit reports
+          Explore and analyze all published smart contract audits in one place
         </p>
       </div>
 

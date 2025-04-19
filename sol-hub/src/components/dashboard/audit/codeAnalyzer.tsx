@@ -36,11 +36,11 @@ contract Vault {
 }`;
 
 const supportedChains = [
+  { id: "Educhain", name: "Educhain" },
   { id: "ethereum", name: "Ethereum" },
   { id: "polygon", name: "Polygon" },
   { id: "arbitrum", name: "Arbitrum" },
   { id: "bsc", name: "BSC" },
-  { id: "Educhain", name: "Educhain" },
 ];
 
 type CodeAnalyzerProps = {
@@ -50,7 +50,7 @@ type CodeAnalyzerProps = {
 
 const CodeAnalyzer = ({ onAnalyze, isAnalyzing }: CodeAnalyzerProps) => {
   const [code, setCode] = useState(sampleCode);
-  const [selectedChain, setSelectedChain] = useState("ethereum");
+  const [selectedChain, setSelectedChain] = useState("Educhain");
   const { toast } = useToast();
 
   const handleAnalyze = () => {

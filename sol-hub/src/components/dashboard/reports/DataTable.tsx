@@ -87,7 +87,7 @@ const DataTable = ({ className }: DataTableProps) => {
                 const hash = await auditRegistry.getContractHashByIndex(i);
                 const audit = await auditRegistry.getLatestAudit(hash);
 
-                allAudits.push({
+                allAudits.unshift({
                   id: i + 1,
                   name: `Contract ${i}`,
                   chain: "Educhain",
