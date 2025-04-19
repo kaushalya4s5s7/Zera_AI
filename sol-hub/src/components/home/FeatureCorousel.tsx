@@ -460,7 +460,7 @@ function Steps({
                       isCompleted &&
                         "bg-brand-400 text-white dark:bg-brand-400",
                       isCurrent &&
-                        "bg-brand-300/80 text-neutral-400 dark:bg-neutral-500/50",
+                        "bg-brand-300/80 text-neutral-400 dark:bg-black",
                       isFuture && "bg-brand-300/10 dark:bg-neutral-500/20"
                     )}
                   >
