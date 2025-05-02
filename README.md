@@ -31,7 +31,7 @@ Smart contracts power DeFi, NFTs, DAOs — yet they remain vulnerable. From the 
 - Preventing exploits before deployment  
 - Speeding up development cycles  
 - Empowering devs with test-driven, secure coding practices  
-- Running on the **fast, low-cost BNB Smart Chain**
+- Running on the **fast, low-cost EDU Chain**
 
 ---
 
